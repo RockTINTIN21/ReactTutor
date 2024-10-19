@@ -1,0 +1,11 @@
+:root {
+  color: #E1E3E7;
+}
+html, body {
+  font-family: "Roboto Light", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #E1E3E7!important;
+  background-color: #1A1A1A;
+}
+
