@@ -1,0 +1,18 @@
+.clear__button{
+    background-color: transparent!important;
+    border: none;
+    border: 0;
+    height: 45px;
+    width: 45px;
+    padding: 0;
+}
+.clear__button:hover, .clear__button:focus,.clear__button:active,.clear__button:focus{
+    background-color: #222222 !important;
+    height: 45px;
+    width: 45px;
+}
+.clear__button__submit{
+    background-color: transparent!important;
+    border: none;
+    border: 0;
+}

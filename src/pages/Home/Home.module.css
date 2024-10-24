@@ -1,0 +1,16 @@
+.buttonStart, a{
+    border-radius: 20px;
+    background-color:transparent ;
+    border-color: white;
+    color: white;
+    text-decoration: none;
+}
+.buttonStart:hover{
+    text-decoration: none;
+    background-color:#58C4DC ;
+    color: black;
+    border-color: #58C4DC;
+}
+a:hover{
+    color: black;
+}

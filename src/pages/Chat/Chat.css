@@ -1,0 +1,90 @@
+.chat_header>hr{
+    color: #373737;
+}
+.chat_header span{
+    font-weight: 600;
+}
+.date{
+    color: #6D6D6D;
+}
+.header_message{
+    font-size: 20px;
+
+}
+.content_message{
+
+    display: inline-block;
+    padding: 0.7rem;
+}
+.footer_message{
+    color: #6D6D6D;
+    font-size: 12px;
+}
+.content_message__reactTutor{
+    border-radius: 0px 30px 30px 30px;
+    background-color: #2D2D2D;
+}
+.content_message__user{
+    border-radius: 30px 30px 30px 30px;
+    background-color: #4A4A4A;
+}
+.header_message__reactTutor{
+    color: #61DAFB;
+}
+.header_message__reactTutor{
+    color: #E0E0E0;
+}
+/*.form-group{*/
+/*    position: relative;*/
+/*}*/
+.clear__button__submit{
+    /*position: absolute;*/
+    /*right: 20rem;*/
+    /*transform: translateY(-50%);*/
+    background-color: transparent;
+    border: none;
+    z-index: 2;
+    /*cursor: pointer;*/
+}
+
+
+.form-control__chat{
+    z-index: 1;
+
+    border-radius: 30px;
+    border-color: transparent;
+    background-color: #4A4A4A;
+    /*width: 839px;*/
+    color: #E1E3E7;
+    box-shadow: none;
+    line-height: 1.5; /* Устанавливаем стабильную высоту строки */
+    box-sizing: border-box; /* Учитываем padding и border */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 60px;
+    font-size: 16px;
+    resize: none; /* Запрещаем изменение размера вручную */
+    overflow: hidden; /* Скрываем прокрутку */
+    /*min-height: 100px;*/
+    min-height: 3rem;
+}
+
+.form-control__chat:active, .form-control__chat:focus,.form-control__chat:placeholder-shown{
+    border-radius: 30px;
+    border-color: transparent;
+    background-color: #4A4A4A!important;
+    color: white;
+    box-shadow: none;
+    line-height: 1.5; /* Устанавливаем стабильную высоту строки */
+    box-sizing: border-box; /* Учитываем padding и border */
+    min-height: 3rem;
+}
+
+.form-control::placeholder{
+    color: #C7C7C7;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 60px
+}

@@ -5,32 +5,27 @@ import gitLogo from '../../assets/icons/gitLogo.png';
 function Header(){
     return(
         <>
-            <Navbar collapseOnSelect expand="lg" className="pt-5">
-                <Container>
+            <Navbar collapseOnSelect expand="lg" className="">
                     <Navbar.Brand href="/">
                         <img
                             alt="ReactTutor"
                             src={Logo}
-                            className="d-inline-block align-top "
+                            className="d-inline-block"
                         />{' '}
-                        ReactTutorAI
+                        React.TutorAI
                     </Navbar.Brand>
-
-
-
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Toggle className='custom-toggler' aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto"></Nav>
-                        <Nav>
-                            <Nav.Link href="#deets" className=''>О проекте</Nav.Link>
-                            <Nav.Link href="#deets" className=''>Инструменты</Nav.Link>
-                            <Nav.Link href="#deets" className=''>Викторина</Nav.Link>
-                            <Nav.Link className='p-4'>
-                                <img src={gitLogo} alt="ReactTutor"/>
+                        <Nav className='text-center'>
+                            <Nav.Link href="#deets" className='ms-md-5'>Викторина</Nav.Link>
+                            <Nav.Link href="#deets" className='ms-md-5'>Инструменты</Nav.Link>
+                            <Nav.Link href="#deets" className='ms-md-5'>О проекте</Nav.Link>
+                            <Nav.Link className="ms-md-5">
+                                <img src={gitLogo} alt="gitLogo"/>
                             </Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
-                </Container>
             </Navbar>
         </>
     )
