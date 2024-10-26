@@ -3,12 +3,12 @@ import VantaBackground from "../../components/VantaBackground/VantaBackground.js
 import largeLogo from '../../assets/icons/largeLogo.png';
 import './Chat.css';
 import styles from './Chat.module.css';
-import history from '../../assets/icons/history.svg';
-import send from '../../assets/icons/send.svg';
+import history from '../../assets/icons/history.png';
+import send from '../../assets/icons/send.png';
 import {Button, Card, CardGroup, Carousel, Col, Form, Row} from "react-bootstrap";
 import {useEffect, useRef, useState} from "react";
 import {Helmet} from "react-helmet";
-import userAvatar from '../../assets/icons/userAvatar.png';
+import userAvatar from '../../assets/icons/avatar.png';
 import ChangeButtonColor from "../../components/ChangeButtonColor/ChangeButtonColor.jsx";
 
 function Chat() {
@@ -17,6 +17,7 @@ function Chat() {
     const [formControlChat, setFormControlChat] = useState(null);
     const [wrapperButtonSubmit, setWrapperButtonSubmit] = useState(null);
     const [size, setSize] = useState([window.innerWidth]);
+    const testRef = useRef(null);
     useEffect(() => {
         setTimeout(() => {
             setChatInputElement(document.querySelector('.chat_input'));
@@ -111,7 +112,7 @@ function Chat() {
 
                     <Form className='mt-5 container-fluid '>
                         <Form.Group className="mb-3 row chat_input" controlId="formChat">
-                            <div className="col-10 col-md-11 ps-0">
+                            <div className="col-10 col-md-11 ps-0" ref={testRef}>
                                 <Form.Control as='textarea' className='form-control__chat' rows={1} onInput={handleInput} ref={textareaRef} placeholder="Ваш вопрос" />
                             </div>
                             <div className="col-2 ps-md-4 ps-0 m-0 col-md-1 d-flex wrapper-buttonSubmit">
