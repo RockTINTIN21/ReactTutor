@@ -69,7 +69,11 @@
     /*min-height: 100px;*/
     min-height: 3rem;
 }
-
+.button_submit{
+    background-color: transparent!important;
+    border: none;
+    border: 0;
+}
 .form-control__chat:active, .form-control__chat:focus,.form-control__chat:placeholder-shown{
     border-radius: 30px;
     border-color: transparent;
@@ -79,12 +83,16 @@
     line-height: 1.5; /* Устанавливаем стабильную высоту строки */
     box-sizing: border-box; /* Учитываем padding и border */
     min-height: 3rem;
+    overflow:hidden;
+    /*overflow-y:scroll;*/
+    /*height: auto;*/
+    max-height:12rem;
 }
 
 .form-control::placeholder{
     color: #C7C7C7;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 60px
+    /*padding-top: 10px;*/
+    /*padding-bottom: 10px;*/
+    /*padding-left: 20px;*/
+    /*padding-right: 60px*/
 }
