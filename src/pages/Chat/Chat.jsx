@@ -21,13 +21,18 @@ function Chat() {
     const [navbarHeight,setNavbarHeight] = useState(null);
     const [clientWindowSize, setClientWindowSize] = useState([window.innerWidth, window.innerHeight]);
     const [formValue, setFormValue] = useState(0);
-    const [chatSize, setChatSize] = useState(null);
-    const clientChatMaxHeight = useRef(null);
+    const clientChatMaxHeightRef = useRef(null);
+    const [clientChatMaxHeight,setClientChatMaxHeight] = useState(null)
+    const [clientChatTotalHeight,setClientChatTotalHeight] = useState(null)
+
+
+
     useEffect(() => {
         // setNavbarHeight(document.querySelector('.navbar'));
+        setClientChatMaxHeight(document.querySelector('.chat'))
         setFormControlChat(document.querySelector('.form-control__chat'));
         setWrapperButtonSubmit(document.querySelector('.wrapper-buttonSubmit'));
-        setChatSize(document.querySelectorAll('.message'));
+
         const resizeHandler = () => setClientWindowSize([window.innerWidth, window.innerHeight])
         window.addEventListener('resize', resizeHandler);
         return ()=>{
@@ -35,30 +40,50 @@ function Chat() {
         }
     }, []);
 
-    //Test
-    // useEffect(() => {
-    //     const timeoutId = setTimeout(() => {
-    //         if (chatSize) {
-    //             chatSize.forEach((message) => {
-    //                 console.log(parseFloat(getComputedStyle(message).height))
-    //             });
-    //         }
-    //     },100)
-    //     return () => clearTimeout(timeoutId);
-    // }, [chatSize]);
 
     useEffect(() => {
-        const messages = clientChatMaxHeight.current.querySelectorAll('.message');
-        setNavbarHeight(document.querySelector('.navbar'));
+        // if(clientChatMaxHeight){
+        //     if(clientChatTotalHeight > clientChatMaxHeight){
+        //         console.log('opa!',clientChatTotalHeight);
+        //     }
+        // }
+        const handleHeightCheck = () => {
+            if (clientChatMaxHeightRef.current) {
+                requestAnimationFrame(() => {
+                    const height = clientChatMaxHeightRef.current.clientHeight;
+                    console.log('Текущая высота:', height);
+                });
+            }
+        };
+
+        handleHeightCheck();
+
+    }, [clientChatMaxHeight]);
+
+    useEffect(() => {
+        const messages = clientChatMaxHeightRef.current.querySelectorAll('.message');
+        const navbar = document.querySelector('.navbar');
         const resizeObserver = new ResizeObserver((entries) => {
             let totalHeight = 0;
             for (let entry of entries) {
-
                 totalHeight += entry.contentRect.height;
-            }
 
-        })
+                // console.log('entry.contentRect.height',entry.contentRect.height)
+
+            }
+            setClientChatTotalHeight(totalHeight);
+            // console.log('total',totalHeight)
+            if(navbar){
+                const navbarHeight = parseInt(getComputedStyle(navbar).height);
+                setNavbarHeight(navbarHeight);
+            }
+            // if(clientChatMaxHeightRef.current){
+            //     setClientChatMaxHeight(parseFloat(clientChatMaxHeightRef.current.clientHeight));
+            //     console.log('clientChatMaxHeight', parseFloat(getComputedStyle(clientChatMaxHeightRef.current).height));
+            // }
+        });
         messages.forEach((message)=>resizeObserver.observe(message));
+        resizeObserver.observe(clientChatMaxHeightRef.current);
         return () => {
             messages.forEach((message)=>resizeObserver.unobserve(message));
             resizeObserver.disconnect();
@@ -76,20 +101,12 @@ function Chat() {
             submitButton.current.classList.add('disabled');
         }
     }
-    // useEffect(() => {
-    //     const timeoutId = setTimeout(() => {
-    //         if (navbarHeight) {
-    //             const mainContentHeight = clientWindowSize[1] - parseFloat(getComputedStyle(navbarHeight).height);
-    //             mainContentRef.current.style.height = `${mainContentHeight}px`;
-    //         }
-    //     }, 100);
-    //     return () => clearTimeout(timeoutId);
-    // }, [navbarHeight, clientWindowSize]);
     useEffect(() => {
         if (navbarHeight) {
-            const mainContentHeight = clientWindowSize[1] - parseFloat(getComputedStyle(navbarHeight).height);
+            const mainContentHeight = clientWindowSize[1] - navbarHeight;
             mainContentRef.current.style.height = `${mainContentHeight}px`;
         }
+    },[navbarHeight])
     const changeInputWidth = () => {
         if(formControlChat){
             formControlChat.style.width = `${chatInputElementRef.current.offsetWidth}px`;
@@ -140,7 +157,7 @@ function Chat() {
                         <div className="date pt-1"><span>20.10.2024</span></div>
                         <hr />
                     </div>
-                    <div className="chat" ref={clientChatMaxHeight}>
+                    <div className="chat h-100 mh-100" ref={clientChatMaxHeightRef}>
                         <div className="message message__reactTutor d-flex flex-column w-100 align-items-start">
                             <div className='header_message header_message__reactTutor'>
                                 <img src={largeLogo} width='35px' alt="largeLogo"/>
@@ -178,6 +195,30 @@ function Chat() {
                                 <span>20:27</span>
                             </div>
                         </div>
+                        {/*<div className="message message__user d-flex flex-column w-100 align-items-end">*/}
+                        {/*    <div className='header_message header_message__user'>*/}
+                        {/*        <span className='pe-2'>Александр</span>*/}
+                        {/*        <img src={userAvatar} width='35px' alt="largeLogo"/>*/}
+                        {/*    </div>*/}
+                        {/*    <div className='content_message content_message__user mt-3'>*/}
+                        {/*        <p className='m-0'>Пожалуй я выберу Js</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className='footer_message mt-1'>*/}
+                        {/*        <span>20:29</span>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
+                        {/*<div className="message message__reactTutor d-flex flex-column w-100 align-items-start">*/}
+                        {/*    <div className='header_message header_message__reactTutor'>*/}
+                        {/*        <img src={largeLogo} width='35px' alt="largeLogo"/>*/}
+                        {/*        <span className='ps-2'>ReactTutor</span>*/}
+                        {/*    </div>*/}
+                        {/*    <div className='content_message content_message__reactTutor mt-3'>*/}
+                        {/*        <p className='m-0'>Привет! Я ReactTutor, твой помощник в изучении фронтенда.</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className='footer_message mt-1'>*/}
+                        {/*        <span>20:27</span>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                     </div>
 
                     <Form className='mt-auto p-2 container-fluid pb-md-5 '>
