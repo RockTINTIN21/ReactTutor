@@ -19,22 +19,55 @@ function Chat() {
     const [formControlChat,setFormControlChat] = useState(null);
     const [wrapperButtonSubmit, setWrapperButtonSubmit] = useState(null);
     const [navbarHeight,setNavbarHeight] = useState(null);
-    const [size, setSize] = useState([window.innerWidth, window.innerHeight]);
-    const [value, setValue] = useState(0);
-    const [test,setTest] = useState(0)
+    const [clientWindowSize, setClientWindowSize] = useState([window.innerWidth, window.innerHeight]);
+    const [formValue, setFormValue] = useState(0);
+    const [chatSize, setChatSize] = useState(null);
+    const clientChatMaxHeight = useRef(null);
     useEffect(() => {
-        setNavbarHeight(document.querySelector('.navbar'));
+        // setNavbarHeight(document.querySelector('.navbar'));
         setFormControlChat(document.querySelector('.form-control__chat'));
         setWrapperButtonSubmit(document.querySelector('.wrapper-buttonSubmit'));
-        const resizeHandler = () => setSize([window.innerWidth, window.innerHeight])
+        setChatSize(document.querySelectorAll('.message'));
+        const resizeHandler = () => setClientWindowSize([window.innerWidth, window.innerHeight])
         window.addEventListener('resize', resizeHandler);
         return ()=>{
-            window.removeEventListener('resize', () => setSize([window.innerWidth ,window.innerHeight]));
+            window.removeEventListener('resize', () => setClientWindowSize([window.innerWidth ,window.innerHeight]));
         }
     }, []);
+
+    //Test
+    // useEffect(() => {
+    //     const timeoutId = setTimeout(() => {
+    //         if (chatSize) {
+    //             chatSize.forEach((message) => {
+    //                 console.log(parseFloat(getComputedStyle(message).height))
+    //             });
+    //         }
+    //     },100)
+    //     return () => clearTimeout(timeoutId);
+    // }, [chatSize]);
+
+    useEffect(() => {
+        const messages = clientChatMaxHeight.current.querySelectorAll('.message');
+        setNavbarHeight(document.querySelector('.navbar'));
+        const resizeObserver = new ResizeObserver((entries) => {
+            let totalHeight = 0;
+            for (let entry of entries) {
+
+                totalHeight += entry.contentRect.height;
+            }
+
+        })
+        messages.forEach((message)=>resizeObserver.observe(message));
+        return () => {
+            messages.forEach((message)=>resizeObserver.unobserve(message));
+            resizeObserver.disconnect();
+        }
+    },[])
+
     useEffect(() => {
         changeInputWidth();
-    },[size,formControlChat]);
+    },[clientWindowSize,formControlChat]);
 
     const handleChangeTextarea = (e) =>{
         if(e.target.value.length){
@@ -43,24 +76,27 @@ function Chat() {
             submitButton.current.classList.add('disabled');
         }
     }
+    // useEffect(() => {
+    //     const timeoutId = setTimeout(() => {
+    //         if (navbarHeight) {
+    //             const mainContentHeight = clientWindowSize[1] - parseFloat(getComputedStyle(navbarHeight).height);
+    //             mainContentRef.current.style.height = `${mainContentHeight}px`;
+    //         }
+    //     }, 100);
+    //     return () => clearTimeout(timeoutId);
+    // }, [navbarHeight, clientWindowSize]);
     useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            if (navbarHeight) {
-                console.log('test',navbarHeight.scrollHeight);
-                const mainContentHeight = size[1] - parseFloat(getComputedStyle(navbarHeight).height);
-                setTest(mainContentHeight);
-                mainContentRef.current.style.height = `${mainContentHeight}px`;
-            }
-        }, 100); // Задержка в 100 мс
-        return () => clearTimeout(timeoutId);
-    }, [navbarHeight, size]);
+        if (navbarHeight) {
+            const mainContentHeight = clientWindowSize[1] - parseFloat(getComputedStyle(navbarHeight).height);
+            mainContentRef.current.style.height = `${mainContentHeight}px`;
+        }
     const changeInputWidth = () => {
         if(formControlChat){
             formControlChat.style.width = `${chatInputElementRef.current.offsetWidth}px`;
         }
     };
     const handleInput = (e) => {
-        setValue(e.target.value);
+        setFormValue(e.target.value);
         const computedStyles = window.getComputedStyle(formControlChat);
         const minHeight = parseFloat(computedStyles.minHeight);
         const height = parseFloat(computedStyles.height);
@@ -76,12 +112,12 @@ function Chat() {
         }
     };
     useEffect(() => {
-        if(value.length === 0){
+        if(formValue.length === 0){
             formControlChat.style.overflowY = `hidden`;
             wrapperButtonSubmit.style.alignItems = 'center';
             formControlChat.style.height = '3rem';
         }
-    },[value,formControlChat,wrapperButtonSubmit])
+    },[formValue,formControlChat,wrapperButtonSubmit])
     return (
         <div className='h-100 p-3 p-md-0'>
             <Helmet><title>Чат</title></Helmet>
@@ -96,19 +132,18 @@ function Chat() {
                         <li><a href="">Знакомство</a></li>
                         <li>Выбор направления</li>
                         <li>Что такое html</li>
-                        <li>{test}</li>
                     </ul>
                 </aside>
-                <main className="col-12 col-md-9 p-2" ref={mainContentRef}>
+                <main className="col-12 col-md-9 p-2 d-flex flex-column" ref={mainContentRef}>
                     <div className="chat_header text-md-start text-center">
                         <h3>Чат с ReactTutor</h3>
                         <div className="date pt-1"><span>20.10.2024</span></div>
                         <hr />
                     </div>
-                    <div className="chat pt-3">
-                        <div className="message__reactTutor d-flex flex-column w-100 align-items-start">
+                    <div className="chat" ref={clientChatMaxHeight}>
+                        <div className="message message__reactTutor d-flex flex-column w-100 align-items-start">
                             <div className='header_message header_message__reactTutor'>
-                                <img src={largeLogo} width='35px' alt="largeLogo" />
+                                <img src={largeLogo} width='35px' alt="largeLogo"/>
                                 <span className='ps-2'>ReactTutor</span>
                             </div>
                             <div className='content_message content_message__reactTutor mt-3'>
@@ -119,10 +154,10 @@ function Chat() {
                             </div>
                         </div>
 
-                        <div className="message__user d-flex flex-column w-100 align-items-end">
+                        <div className="message message__user d-flex flex-column w-100 align-items-end">
                             <div className='header_message header_message__user'>
                                 <span className='pe-2'>Александр</span>
-                                <img src={userAvatar} width='35px' alt="largeLogo" />
+                                <img src={userAvatar} width='35px' alt="largeLogo"/>
                             </div>
                             <div className='content_message content_message__user mt-3'>
                                 <p className='m-0'>Пожалуй я выберу Js</p>
@@ -131,15 +166,29 @@ function Chat() {
                                 <span>20:29</span>
                             </div>
                         </div>
+                        <div className="message message__reactTutor d-flex flex-column w-100 align-items-start">
+                            <div className='header_message header_message__reactTutor'>
+                                <img src={largeLogo} width='35px' alt="largeLogo"/>
+                                <span className='ps-2'>ReactTutor</span>
+                            </div>
+                            <div className='content_message content_message__reactTutor mt-3'>
+                                <p className='m-0'>Привет! Я ReactTutor, твой помощник в изучении фронтенда.</p>
+                            </div>
+                            <div className='footer_message mt-1'>
+                                <span>20:27</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <Form className='mt-5 container-fluid'>
-                        <Form.Group className="mb-3 row chat_input" ref={chatInputElementRef} controlId="formChat">
-                            <div className="col-10 col-md-11 ps-0" >
-                                <Form.Control as='textarea' className='form-control__chat' rows={1} onInput={handleInput} onChange={handleChangeTextarea} placeholder="Ваш вопрос" />
+                    <Form className='mt-auto p-2 container-fluid pb-md-5 '>
+                        <Form.Group className="row chat_input" ref={chatInputElementRef} controlId="formChat">
+                            <div className="col-10 col-md-11 ps-0">
+                                <Form.Control as='textarea' className='form-control__chat' rows={1}
+                                              onInput={handleInput} onChange={handleChangeTextarea}
+                                              placeholder="Ваш вопрос"/>
                             </div>
-                            <div className="col-2 ps-md-4 ps-lg-2 ps-xxl-3 ps-0 m-0 col-md-1 d-flex wrapper-buttonSubmit">
-                                {/*<ChangeButtonColor isSubmit={true} path={buttonSend} alt={'Отправить'} />*/}
+                            <div
+                                className="col-2 ps-md-4 ps-lg-2 ps-xxl-3 ps-0 m-0 col-md-1 d-flex wrapper-buttonSubmit">
                                 <Button className='button_submit disabled' ref={submitButton}>
                                     <img src={send} alt='Отправить'/>
                                 </Button>
