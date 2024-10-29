@@ -41,54 +41,54 @@ function Chat() {
     }, []);
 
 
-    useEffect(() => {
-        // if(clientChatMaxHeight){
-        //     if(clientChatTotalHeight > clientChatMaxHeight){
-        //         console.log('opa!',clientChatTotalHeight);
-        //     }
-        // }
-        const handleHeightCheck = () => {
-            if (clientChatMaxHeightRef.current) {
-                requestAnimationFrame(() => {
-                    const height = clientChatMaxHeightRef.current.clientHeight;
-                    console.log('Текущая высота:', height);
-                });
-            }
-        };
+    // useEffect(() => {
+    //     // if(clientChatMaxHeight){
+    //     //     if(clientChatTotalHeight > clientChatMaxHeight){
+    //     //         console.log('opa!',clientChatTotalHeight);
+    //     //     }
+    //     // }
+    //     const handleHeightCheck = () => {
+    //         if (clientChatMaxHeightRef.current) {
+    //             requestAnimationFrame(() => {
+    //                 const height = clientChatMaxHeightRef.current.clientHeight;
+    //                 console.log('Текущая высота:', height);
+    //             });
+    //         }
+    //     };
+    //
+    //     handleHeightCheck();
+    //
+    // }, [clientChatMaxHeight]);
 
-        handleHeightCheck();
-
-    }, [clientChatMaxHeight]);
-
-    useEffect(() => {
-        const messages = clientChatMaxHeightRef.current.querySelectorAll('.message');
-        const navbar = document.querySelector('.navbar');
-        const resizeObserver = new ResizeObserver((entries) => {
-            let totalHeight = 0;
-            for (let entry of entries) {
-                totalHeight += entry.contentRect.height;
-
-                // console.log('entry.contentRect.height',entry.contentRect.height)
-
-            }
-            setClientChatTotalHeight(totalHeight);
-            // console.log('total',totalHeight)
-            if(navbar){
-                const navbarHeight = parseInt(getComputedStyle(navbar).height);
-                setNavbarHeight(navbarHeight);
-            }
-            // if(clientChatMaxHeightRef.current){
-            //     setClientChatMaxHeight(parseFloat(clientChatMaxHeightRef.current.clientHeight));
-            //     console.log('clientChatMaxHeight', parseFloat(getComputedStyle(clientChatMaxHeightRef.current).height));
-            // }
-        });
-        messages.forEach((message)=>resizeObserver.observe(message));
-        resizeObserver.observe(clientChatMaxHeightRef.current);
-        return () => {
-            messages.forEach((message)=>resizeObserver.unobserve(message));
-            resizeObserver.disconnect();
-        }
-    },[])
+    // useEffect(() => {
+    //     const messages = clientChatMaxHeightRef.current.querySelectorAll('.message');
+    //     const navbar = document.querySelector('.navbar');
+    //     const resizeObserver = new ResizeObserver((entries) => {
+    //         let totalHeight = 0;
+    //         for (let entry of entries) {
+    //             totalHeight += entry.contentRect.height;
+    //
+    //             // console.log('entry.contentRect.height',entry.contentRect.height)
+    //
+    //         }
+    //         setClientChatTotalHeight(totalHeight);
+    //         // console.log('total',totalHeight)
+    //         if(navbar){
+    //             const navbarHeight = parseInt(getComputedStyle(navbar).height);
+    //             setNavbarHeight(navbarHeight);
+    //         }
+    //         // if(clientChatMaxHeightRef.current){
+    //         //     setClientChatMaxHeight(parseFloat(clientChatMaxHeightRef.current.clientHeight));
+    //         //     console.log('clientChatMaxHeight', parseFloat(getComputedStyle(clientChatMaxHeightRef.current).height));
+    //         // }
+    //     });
+    //     messages.forEach((message)=>resizeObserver.observe(message));
+    //     resizeObserver.observe(clientChatMaxHeightRef.current);
+    //     return () => {
+    //         messages.forEach((message)=>resizeObserver.unobserve(message));
+    //         resizeObserver.disconnect();
+    //     }
+    // },[])
 
     useEffect(() => {
         changeInputWidth();

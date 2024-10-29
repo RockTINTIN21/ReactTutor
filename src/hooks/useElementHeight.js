@@ -16,3 +16,4 @@ const useElementHeight = () => {
     },[])
     return [ref,height]
 };
+export default useElementHeight;
