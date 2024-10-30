@@ -1,19 +1,29 @@
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 
 const useElementHeight = () => {
     const ref = useRef(null);
     const [height, setHeight] = useState(0);
 
+    const updateHeight = () => {
+        if (ref.current) {
+            setHeight(ref.current.clientHeight);
+        }
+    };
+
     useEffect(() => {
-        const updateHeight = () => {
-            if(ref.current) {
-                setHeight(ref.current.clientHeight);
+        updateHeight();
+
+        const resizeObserver = new ResizeObserver(updateHeight);
+        resizeObserver.observe(ref.current);
+
+        return () => {
+            if (ref.current) {
+                resizeObserver.unobserve(ref.current);
             }
         };
-        updateHeight();
-        window.addEventListener('resize', updateHeight);
-        return () => {window.removeEventListener('resize', updateHeight);}
-    },[])
-    return [ref,height]
+    }, []);
+
+    return [ref, height];
 };
+
 export default useElementHeight;

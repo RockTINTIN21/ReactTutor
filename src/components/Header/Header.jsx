@@ -1,17 +1,10 @@
-import {Container, Nav, Navbar} from "react-bootstrap";
+import {Nav, Navbar} from "react-bootstrap";
 import './Header.css';
 import Logo from '../../assets/icons/Logo.png';
 import gitLogo from '../../assets/icons/gitLogo.png';
-import useElementHeight from "../../hooks/useElementHeight.js";
-import {useEffect} from "react";
-function Header(){
-    const [navbarRef,navbarHeight] = useElementHeight();
-    useEffect(()=>{
-        console.log('navbarHeight',navbarHeight)
-    },[navbarHeight])
+function Header({refNavbar}){
     return(
-
-        <Navbar collapseOnSelect expand="lg" ref={navbarRef}>
+        <Navbar collapseOnSelect expand="lg" ref={refNavbar}>
             <Navbar.Brand href="/">
                 <img
                     alt="ReactTutor"
@@ -33,7 +26,6 @@ function Header(){
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
-
     )
 }
 export default Header;
