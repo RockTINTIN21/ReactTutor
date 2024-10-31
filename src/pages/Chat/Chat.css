@@ -34,40 +34,32 @@
 .header_message__reactTutor{
     color: #E0E0E0;
 }
-/*.form-group{*/
-/*    position: relative;*/
-/*}*/
+
 .clear__button__submit{
-    /*position: absolute;*/
-    /*right: 20rem;*/
-    /*transform: translateY(-50%);*/
     background-color: transparent;
     border: none;
     z-index: 2;
-    /*cursor: pointer;*/
-}
 
+}
 
 .form-control__chat{
     z-index: 1;
-
     border-radius: 30px;
     border-color: transparent;
     background-color: #4A4A4A;
-    /*width: 839px;*/
     color: #E1E3E7;
     box-shadow: none;
-    line-height: 1.5; /* Устанавливаем стабильную высоту строки */
-    box-sizing: border-box; /* Учитываем padding и border */
+    line-height: 1.5;
+    box-sizing: border-box;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 20px;
     padding-right: 60px;
     font-size: 16px;
-    resize: none; /* Запрещаем изменение размера вручную */
-    overflow: hidden; /* Скрываем прокрутку */
-    /*min-height: 100px;*/
+    resize: none;
+    overflow: hidden;
     min-height: 3rem;
+    max-height: 250px;
 }
 .button_submit{
     background-color: transparent!important;
@@ -80,19 +72,51 @@
     background-color: #4A4A4A!important;
     color: white;
     box-shadow: none;
-    line-height: 1.5; /* Устанавливаем стабильную высоту строки */
-    box-sizing: border-box; /* Учитываем padding и border */
+    line-height: 1.5;
+    box-sizing: border-box;
     min-height: 3rem;
     overflow:hidden;
-    /*overflow-y:scroll;*/
-    /*height: auto;*/
-    max-height:12rem;
 }
 
 .form-control::placeholder{
     color: #C7C7C7;
-    /*padding-top: 10px;*/
-    /*padding-bottom: 10px;*/
-    /*padding-left: 20px;*/
-    /*padding-right: 60px*/
+
+}
+.chat::-webkit-scrollbar, .form-control__chat::-webkit-scrollbar{
+    width: 7px;
+    background-color: #2D2D2D;
+    border-radius: 1rem;
+}
+.chat::-webkit-scrollbar-thumb{
+    background-color: #4A4A4A;
+    border-radius: 1rem;
+}
+.form-control__chat::-webkit-scrollbar{
+    width: 7px;
+    background-color: transparent;
+    border-radius: 1rem;
+}
+.history__theme>li{
+    margin-bottom: 10px;
+}
+.form-control__chat::-webkit-scrollbar-thumb{
+    background-color: #2D2D2D;
+    border-radius: 1rem;
+}
+.chatFormWrapper{
+    background-color: transparent;
+}
+
+.clear__button{
+    background-color: transparent!important;
+    border: none;
+    border: 0;
+    height: 45px;
+    width: 45px;
+    padding: 0;
+}
+.clear__button:hover, .clear__button:focus,.clear__button:active,.clear__button:focus{
+    background-color: #222222 !important;
+    height: 45px;
+    width: 45px;
 }
