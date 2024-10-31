@@ -1,7 +1,7 @@
 import Header from "../../components/Header/Header.jsx";
 import largeLogo from '../../assets/icons/largeLogo.png';
 import './Chat.css';
-import styles from './Chat.module.css';
+// import styles from './Chat.module.css';
 import history from '../../assets/icons/history.png';
 import send from '../../assets/icons/send.png';
 import {Button, Form, Row} from "react-bootstrap";
@@ -12,14 +12,17 @@ import useElementHeight from "../../hooks/useElementHeight.js";
 import useElementWidth from "../../hooks/useElementWidth.js";
 
 function Chat() {
-    const chatInputElementRef = useRef(null);
+    // const chatInputElementRef = useRef(null);
     const submitButton = useRef(null);
-    const mainContentRef = useRef(null);
+    // const mainContentRef = useRef(null);
+    const [chatInputElementRef,chatInputElementWidth] = useElementWidth();
+    const [mainContentRef, mainContentWidth] = useElementWidth(null)
     const [clientWindowSize, setClientWindowSize] = useState([window.innerWidth, window.innerHeight]);
     const [formValue, setFormValue] = useState(0);
     const [clientChatTotalHeight,setClientChatTotalHeight] = useState(null)
     const [navbarRef,navbarHeight] = useElementHeight(null);
     const [chatRef,clientChatMaxHeight] = useElementHeight(null)
+
     const [formControlChatRef, formControlChatWidth] = useElementWidth(null)
     const wrapperButtonSubmitRef = useRef(null);
     const chatFormWrapperRef = useRef(null);
@@ -44,11 +47,6 @@ function Chat() {
             resizeObserver.disconnect();
         }
     },[])
-
-    // Хук вызова фунции changeInputWidth при изменении размера экрана пользователя.
-    useEffect(() => {
-        changeInputWidth();
-    },[clientWindowSize]);
 
     // Хук автоматического скролла в блоке чата.
     useLayoutEffect(() => {
@@ -85,15 +83,17 @@ function Chat() {
     useEffect(() => {
         const mainContentWidth = mainContentRef.current.getBoundingClientRect().width;
         chatFormWrapperRef.current.style.width = `${mainContentWidth}px`;
-    }, [clientWindowSize]);
+    }, [clientWindowSize, mainContentWidth]);
 
 
     // Функция измения длины поля ввода.
-    const changeInputWidth = () => {
+    useLayoutEffect(() => {
         if(formControlChatRef){
-            formControlChatRef.current.style.width = `${chatInputElementRef.current.offsetWidth}px`;
+            formControlChatRef.current.style.width = `${mainContentRef.current.offsetWidth}px`;
         }
-    };
+        console.log('Вызвано!',chatInputElementWidth)
+    }, [clientWindowSize,mainContentWidth]);
+
     // Функция измения высоты поля ввода и включения скролла в поле ввода.
     const handleInput = (e) => {
         setFormValue(e.target.value);
@@ -122,26 +122,32 @@ function Chat() {
     },[formValue,formControlChatRef,wrapperButtonSubmitRef])
 
     //Функция скрытия сайдбара
-    const handleShowSidebar = () =>{
-        // const test = () =>{
-        //     if(sideBarRef.current.style.width !== 'auto'){
-        //         sideBarRef.current.style.width = '0px';
-        //         // sideBarRef.current.style.display = 'none';
-        //     }else{
-        //         sideBarRef.current.style.width = 'auto';
-        //         // sideBarRef.current.style.display = 'block';
-        //     }
-        // }
-        // requestAnimationFrame(test)
-
-        if(sideBarRef.current.style.width !== 'auto'){
-            sideBarRef.current.style.width = '0px';
-            sideBarRef.current.style.display = 'none';
-        }else{
-            sideBarRef.current.style.width = 'auto';
-            sideBarRef.current.style.display = 'block';
+    const handleShowSidebar = (e) => {
+        e.currentTarget.blur();
+        setTimeout(() => {
+            document.activeElement.blur();
+        }, 0);
+        if (sideBarRef.current.classList.contains('collapsed')) {
+            sideBarRef.current.classList.remove('collapsed');
+            document.querySelector('.sideBarTitle').style.display = 'block';
+            document.querySelector('.history__theme').style.display = 'block';
+            document.querySelector('.sidebarHeader').classList.replace('justify-content-end', 'justify-content-between');
+            mainContentRef.current.classList.replace('col-md-11','col-md-9');
+            setTimeout(() => {
+                sideBarRef.current.classList.replace('col-md-1','col-md-3');
+            },200)
+        } else {
+            document.querySelector('.sideBarTitle').style.display = 'none';
+            document.querySelector('.history__theme').style.display = 'none';
+            document.querySelector('.sidebarHeader').classList.replace('justify-content-between', 'justify-content-end');
+            sideBarRef.current.classList.replace('col-md-3','col-md-1');
+            setTimeout(() => {
+                mainContentRef.current.classList.replace('col-md-9','col-md-11');
+            },200)
+            sideBarRef.current.classList.add('collapsed');
         }
-    }
+    };
+
 
     return (
         <div className='h-100 p-3 p-md-0'>
@@ -149,13 +155,13 @@ function Chat() {
             <Header navbarHeight={navbarHeight} refNavbar={navbarRef}/>
             <Row className=''>
                 <aside className='sidebar col-12 col-md-3' ref={sideBarRef}>
-                    <div className="d-flex justify-content-between align-items-center">
-                        <h5>История тем общения</h5>
+                    <div className="d-flex sidebarHeader justify-content-between align-items-start">
+                        <h5 className='sideBarTitle'>История тем общения</h5>
                         <Button className='clear__button'>
-                            <img src={history} alt='История' onClick={handleShowSidebar} />
+                            <img src={history} alt='История' className='p-2' onClick={handleShowSidebar} />
                         </Button>
                     </div>
-                    <ul className={styles.history__theme}>
+                    <ul className='history__theme'>
                         <li><a href="">Знакомство</a></li>
                         <li>Выбор направления</li>
                         <li>Что такое html</li>
@@ -386,7 +392,7 @@ function Chat() {
                                               placeholder="Ваш вопрос"/>
                             </div>
                             <div
-                                className="col-2 ps-md-4 ps-lg-2 ps-xxl-3 ps-0 m-0 col-md-1 d-flex"
+                                className="col-2 ps-md-4 me-0 ps-lg-2 ps-xxl-4 ps-0 m-0 col-md-1 d-flex"
                                 ref={wrapperButtonSubmitRef}>
                                 <Button className='button_submit disabled' ref={submitButton}>
                                     <img src={send} alt='Отправить'/>

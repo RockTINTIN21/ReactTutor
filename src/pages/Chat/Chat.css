@@ -111,12 +111,26 @@
     background-color: transparent!important;
     border: none;
     border: 0;
-    height: 45px;
-    width: 45px;
+    /*height: 45px;*/
+    /*width: 45px;*/
     padding: 0;
 }
-.clear__button:hover, .clear__button:focus,.clear__button:active,.clear__button:focus{
+.clear__button:hover,.clear__button:active,.clear__button:focus{
     background-color: #222222 !important;
-    height: 45px;
-    width: 45px;
+    /*height: 45px;*/
+    /*width: 45px;*/
 }
+.clear__button:not(:hover):not(:active):not(:focus) {
+    background-color: transparent !important;
+}
+
+.sidebar {
+    width: 25%; /* начальная ширина */
+    transition: width 0.3s ease; /* плавный переход ширины */
+    overflow: hidden;
+}
+
+.sidebar.collapsed {
+    width: 80px; /* целевая ширина при скрытии */
+}
+
