@@ -22,7 +22,7 @@ function Home(){
                     <p>Личный помощник в изучении фронтенд-разработки.</p>
                     <div className="buttons d-md-flex col-12 col-md-6 justify-content-center">
                         <Link to='/Chat' className='w-100 m-md-3'><Button className={`w-100 ${styles.buttonStart}`}>Начать изучение</Button></Link>
-                        <Link to='/' className='w-100 m-md-3'><Button className={` w-100 mt-3 ${styles.buttonStart}`}>О проекте</Button></Link>
+                        <Link to='/' className='w-100 m-md-3'><Button className={` w-100 mt-3 mt-md-0 ${styles.buttonStart}`}>О проекте</Button></Link>
                     </div>
                 </div>
 
