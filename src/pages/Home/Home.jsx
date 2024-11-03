@@ -25,8 +25,6 @@ function Home(){
                         <Link to='/' className='w-100 m-md-3'><Button className={` w-100 mt-3 mt-md-0 ${styles.buttonStart}`}>О проекте</Button></Link>
                     </div>
                 </div>
-
-
             </div>
         </div>
     );

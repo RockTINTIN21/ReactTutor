@@ -15,6 +15,7 @@ function Chat() {
     // const chatInputElementRef = useRef(null);
     const submitButton = useRef(null);
     // const mainContentRef = useRef(null);
+    const historyTheme = useRef(null);
     const [chatInputElementRef,chatInputElementWidth] = useElementWidth();
     const [mainContentRef, mainContentWidth] = useElementWidth(null)
     const [clientWindowSize, setClientWindowSize] = useState([window.innerWidth, window.innerHeight]);
@@ -27,23 +28,37 @@ function Chat() {
     const wrapperButtonSubmitRef = useRef(null);
     const chatFormWrapperRef = useRef(null);
     const sideBarRef = useRef(null)
+
+    const [clientThemeMessagesTotalHeight, setClientThemeMessagesTotalHeight] = useState(0)
     useEffect(() => {
         const resizeHandler = () => setClientWindowSize([window.innerWidth, window.innerHeight])
         window.addEventListener('resize', resizeHandler);
+
         const messages = chatRef.current.querySelectorAll('.message');
         const resizeObserver = new ResizeObserver((entries) => {
             let totalHeight = 0;
             for (let entry of entries) {
                 totalHeight += entry.contentRect.height;
-                console.log('totalHeight:',totalHeight)
             }
             setClientChatTotalHeight(totalHeight);
         });
-
         messages.forEach((message)=>resizeObserver.observe(message));
+
+        const historyThemes = historyTheme.current.querySelectorAll('li');
+
+        const resizeObserverHistoryTheme = new ResizeObserver((entries) =>{
+            let totalHeight = 0;
+            for (let entry of entries) {
+                console.log(entry.contentRect)
+                totalHeight += entry.contentRect.height;
+            }
+            setClientThemeMessagesTotalHeight(totalHeight)
+        });
+        historyThemes.forEach((theme)=>resizeObserverHistoryTheme.observe(theme));
         return () => {
             window.removeEventListener('resize', () => setClientWindowSize([window.innerWidth ,window.innerHeight]));
             messages.forEach((message)=>resizeObserver.unobserve(message));
+            historyThemes.forEach((theme)=>resizeObserverHistoryTheme.unobserve(theme));
             resizeObserver.disconnect();
         }
     },[])
@@ -183,13 +198,13 @@ function Chat() {
                         </Button>
                     </div>
                     <hr className="mt-1 hr"/>
-                    <ul className='history__theme ps-0 pe-0'>
+                    <ul className='history__theme ps-0 pe-0' ref={historyTheme}>
                         <li className='active'>
                             <a href="">
                                 <div className="justify-content-between d-flex align-items-center">
                                     <div className="col-7">Знакомство</div>
                                     <div className="col-5 d-flex align-items-center">
-                                        <div className="col-12 historyTheme-time pe-3 text-end">
+                                        <div className="col-12 historyTheme-time pe-2 text-end">
                                             02.11 18:17
                                         </div>
                                         <div className="col-auto active-icon"></div>
@@ -200,22 +215,9 @@ function Chat() {
                         <li className=''>
                             <a href="">
                                 <div className="justify-content-between d-flex align-items-center">
-                                    <div className="col-7">Выбор направления</div>
-                                    <div className="col-5 d-flex align-items-center">
-                                        <div className="col-12 historyTheme-time pe-3 text-end">
-                                            02.11 18:17
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li className=''>
-                            <a href="">
-                                <div className="justify-content-between d-flex align-items-center">
                                     <div className="col-7">Что такое JS, переменные, циклы, методы, объекты.</div>
                                     <div className="col-5 d-flex align-items-center">
-                                        <div className="col-12 historyTheme-time pe-3 text-end">
+                                        <div className="col-12 historyTheme-time pe-2 text-end">
                                             02.11 18:17
                                         </div>
 
@@ -228,7 +230,7 @@ function Chat() {
                                 <div className="justify-content-between d-flex align-items-center">
                                     <div className="col-7">Первые шаги в JS</div>
                                     <div className="col-5 d-flex align-items-center">
-                                        <div className="col-12 historyTheme-time pe-3 text-end">
+                                        <div className="col-12 historyTheme-time pe-2 text-end">
                                             02.11 18:17
                                         </div>
                                     </div>
@@ -240,7 +242,7 @@ function Chat() {
                                 <div className="justify-content-between d-flex align-items-center">
                                     <div className="col-7">Часы на JS</div>
                                     <div className="col-5 d-flex align-items-center">
-                                        <div className="col-12 historyTheme-time pe-3 text-end">
+                                        <div className="col-12 historyTheme-time pe-2 text-end">
                                             02.11 18:17
                                         </div>
                                     </div>
