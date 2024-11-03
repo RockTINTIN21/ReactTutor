@@ -17,30 +17,14 @@ function Home(){
             <div className="content h-100">
                 <Header/>
                 <div className="main h-100 justify-content-center align-items-center d-flex flex-column">
-                    <img src={largeLogo} alt="Logo"/>
+                    <img src={largeLogo} width='100px' alt="Logo"/>
                     <h1>React.TutorAI</h1>
                     <p>Личный помощник в изучении фронтенд-разработки.</p>
-                    <div className="buttons d-md-flex w-50">
-                        <Link to='/Chat' className='w-100 m-3'><Button className={`w-100 ${styles.buttonStart}`}>Начать изучение</Button></Link>
-                        <Link to='/' className='w-100 m-3'><Button className={` w-100 ${styles.buttonStart}`}>О проекте</Button></Link>
+                    <div className="buttons d-md-flex col-12 col-md-6 justify-content-center">
+                        <Link to='/Chat' className='w-100 m-md-3'><Button className={`w-100 ${styles.buttonStart}`}>Начать изучение</Button></Link>
+                        <Link to='/' className='w-100 m-md-3'><Button className={` w-100 mt-3 ${styles.buttonStart}`}>О проекте</Button></Link>
                     </div>
                 </div>
-                {/*<div className="card-block  mt-5">*/}
-                {/*    <h4 className='text-start'>С какими инструментами вам поможет React.TutorAI:</h4>*/}
-                {/*    <Row xs={1} md={4} className="g-4 mt-1">*/}
-                {/*        <Col>*/}
-                {/*            <Card>*/}
-                {/*                <Card.Img variant="top" src={html} />*/}
-
-                {/*            </Card>*/}
-                {/*        </Col>*/}
-                {/*        <Col>*/}
-                {/*            <Card>*/}
-                {/*                <Card.Img variant="top" src="holder.js/100px160"/>*/}
-                {/*            </Card>*/}
-                {/*        </Col>*/}
-                {/*    </Row>*/}
-                {/*</div>*/}
 
 
             </div>

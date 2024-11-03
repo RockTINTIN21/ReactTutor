@@ -4,7 +4,7 @@ import Logo from '../../assets/icons/Logo.png';
 import gitLogo from '../../assets/icons/gitLogo.png';
 function Header({refNavbar}){
     return(
-        <Navbar collapseOnSelect expand="lg" ref={refNavbar}>
+        <Navbar collapseOnSelect expand="lg" className='w-100' ref={refNavbar}>
             <Navbar.Brand href="/">
                 <img
                     alt="ReactTutor"

@@ -127,25 +127,40 @@ function Chat() {
         setTimeout(() => {
             document.activeElement.blur();
         }, 0);
-        if (sideBarRef.current.classList.contains('collapsed')) {
-            sideBarRef.current.classList.remove('collapsed');
-            document.querySelector('.sideBarTitle').style.display = 'block';
-            document.querySelector('.history__theme').style.display = 'block';
-            document.querySelector('.sidebarHeader').classList.replace('justify-content-end', 'justify-content-between');
-            mainContentRef.current.classList.replace('col-md-11','col-md-9');
-            setTimeout(() => {
-                sideBarRef.current.classList.replace('col-md-1','col-md-3');
-            },200)
-        } else {
-            document.querySelector('.sideBarTitle').style.display = 'none';
-            document.querySelector('.history__theme').style.display = 'none';
-            document.querySelector('.sidebarHeader').classList.replace('justify-content-between', 'justify-content-end');
-            sideBarRef.current.classList.replace('col-md-3','col-md-1');
-            setTimeout(() => {
-                mainContentRef.current.classList.replace('col-md-9','col-md-11');
-            },200)
-            sideBarRef.current.classList.add('collapsed');
+        if(clientWindowSize[0] >= 768){
+            if (sideBarRef.current.classList.contains('collapsed')) {
+                sideBarRef.current.classList.remove('collapsed');
+                document.querySelector('.sideBarTitle').style.display = 'block';
+                document.querySelector('.history__theme').style.display = 'block';
+                document.querySelector('.sidebarHeader').classList.replace('justify-content-end', 'justify-content-between');
+                document.querySelector('.hr').style.display = 'block';
+                mainContentRef.current.classList.replace('col-md-11','col-md-9');
+                setTimeout(() => {
+                    sideBarRef.current.classList.replace('col-md-1','col-md-3');
+                },200)
+            }else {
+                document.querySelector('.sideBarTitle').style.display = 'none';
+                document.querySelector('.history__theme').style.display = 'none';
+                document.querySelector('.hr').style.display = 'none';
+                document.querySelector('.sidebarHeader').classList.replace('justify-content-between', 'justify-content-end');
+                sideBarRef.current.classList.replace('col-md-3','col-md-1');
+                setTimeout(() => {
+                    mainContentRef.current.classList.replace('col-md-9','col-md-11');
+                },200)
+                sideBarRef.current.classList.add('collapsed');
+            }
+        }else{
+            if (sideBarRef.current.classList.contains('collapsed-md')) {
+                sideBarRef.current.classList.remove('collapsed-md');
+                document.querySelector('.history__theme').style.display = 'block';
+                document.querySelector('.hr').style.display = 'block';
+            }else{
+                document.querySelector('.history__theme').style.display = 'none';
+                document.querySelector('.hr').style.display = 'none';
+                sideBarRef.current.classList.add('collapsed-md');
+            }
         }
+
     };
 
 
@@ -153,27 +168,93 @@ function Chat() {
         <div className='h-100 p-3 p-md-0'>
             <Helmet><title>Чат</title></Helmet>
             <Header navbarHeight={navbarHeight} refNavbar={navbarRef}/>
-            <Row className=''>
+            <Row>
                 <aside className='sidebar col-12 col-md-3' ref={sideBarRef}>
-                    <div className="d-flex sidebarHeader justify-content-between align-items-start">
+                    <div className="sidebarHeader justify-content-between align-items-center d-none d-lg-flex">
                         <h5 className='sideBarTitle'>История тем общения</h5>
                         <Button className='clear__button'>
-                            <img src={history} alt='История' className='p-2' onClick={handleShowSidebar} />
+                            <img src={history} alt='История' className='p-2' onClick={handleShowSidebar}/>
                         </Button>
                     </div>
-                    <ul className='history__theme'>
-                        <li><a href="">Знакомство</a></li>
-                        <li>Выбор направления</li>
-                        <li>Что такое html</li>
-                        <li>{navbarHeight}</li>
-                        <li>clientHeight: {clientWindowSize[1]}</li>
+                    <div className="d-flex sidebarHeader-md ps-3 pt-1 pe-3 pb-0 justify-content-between align-items-center d-lg-none">
+                        <h6 className='mb-0'>История тем общения</h6>
+                        <Button className='clear__button'>
+                            <img src={history} alt='История' className='p-2' onClick={handleShowSidebar}/>
+                        </Button>
+                    </div>
+                    <hr className="mt-1 hr"/>
+                    <ul className='history__theme ps-0 pe-0'>
+                        <li className='active'>
+                            <a href="">
+                                <div className="justify-content-between d-flex align-items-center">
+                                    <div className="col-7">Знакомство</div>
+                                    <div className="col-5 d-flex align-items-center">
+                                        <div className="col-12 historyTheme-time pe-3 text-end">
+                                            02.11 18:17
+                                        </div>
+                                        <div className="col-auto active-icon"></div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li className=''>
+                            <a href="">
+                                <div className="justify-content-between d-flex align-items-center">
+                                    <div className="col-7">Выбор направления</div>
+                                    <div className="col-5 d-flex align-items-center">
+                                        <div className="col-12 historyTheme-time pe-3 text-end">
+                                            02.11 18:17
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li className=''>
+                            <a href="">
+                                <div className="justify-content-between d-flex align-items-center">
+                                    <div className="col-7">Что такое JS, переменные, циклы, методы, объекты.</div>
+                                    <div className="col-5 d-flex align-items-center">
+                                        <div className="col-12 historyTheme-time pe-3 text-end">
+                                            02.11 18:17
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li className=''>
+                            <a href="">
+                                <div className="justify-content-between d-flex align-items-center">
+                                    <div className="col-7">Первые шаги в JS</div>
+                                    <div className="col-5 d-flex align-items-center">
+                                        <div className="col-12 historyTheme-time pe-3 text-end">
+                                            02.11 18:17
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li className=''>
+                            <a href="">
+                                <div className="justify-content-between d-flex align-items-center">
+                                    <div className="col-7">Часы на JS</div>
+                                    <div className="col-5 d-flex align-items-center">
+                                        <div className="col-12 historyTheme-time pe-3 text-end">
+                                            02.11 18:17
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
                     </ul>
                 </aside>
-                <main className="col-12 col-md-9 ps-2 pe-0 d-flex flex-column wrapperChat" ref={mainContentRef}>
+                <main className="col-12 col-md-9 ps-2 pe-0 mt-3 mt-md-0 d-flex flex-column wrapperChat"
+                      ref={mainContentRef}>
                     <div className="chat_header text-md-start text-center">
-                        <h3>Чат с ReactTutor</h3>
-                        <div className="date pt-1"><span>20.10.2024</span></div>
-                        <hr />
+                        <h4>Чат с ReactTutor</h4>
+                        <div className="date"><span>20.10.2024</span></div>
+                        <hr/>
                     </div>
                     <div className="chat h-100 mh-100 pb-5 mb-2" ref={chatRef}>
                         <div className="message message__reactTutor d-flex flex-column w-100 align-items-start">
@@ -386,10 +467,12 @@ function Chat() {
                           ref={chatFormWrapperRef}>
                         <Form.Group className="row chat_input" ref={chatInputElementRef} controlId="formChat">
                             <div className="col-10 col-md-11 ps-0">
-                                <Form.Control as='textarea' className='form-control__chat' ref={formControlChatRef}
-                                              rows={1}
-                                              onInput={handleInput} onChange={handleChangeTextarea}
-                                              placeholder="Ваш вопрос"/>
+                                <Form.Control
+                                    as='textarea' className='form-control__chat' ref={formControlChatRef}
+                                    rows={1}
+                                    onInput={handleInput} onChange={handleChangeTextarea}
+                                    placeholder="Ваш вопрос"
+                                />
                             </div>
                             <div
                                 className="col-2 ps-md-4 me-0 ps-lg-2 ps-xxl-4 ps-0 m-0 col-md-1 d-flex"
