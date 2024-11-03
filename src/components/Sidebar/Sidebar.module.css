@@ -1,0 +1,60 @@
+
+.active{
+    border-radius: 0.5rem;
+    background-color: #111111;
+}
+.historyTheme>li{
+    padding-right: 1rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    padding-left: 2rem;
+    position: relative;
+}
+.historyTheme>li::before{
+    content: '';
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.3rem;
+    height: 0.3rem;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+.historyThemeTime{
+    font-weight: 300;
+}
+.active_icon{
+    width: 2px;
+    height: 15px;
+    background: #D9D9D9;
+    border-radius: 3px;
+}
+@media(min-width: 768px){
+    .sidebar {
+        width: 25%;
+        transition: width 0.3s ease;
+        overflow: hidden;
+    }
+    .sidebar.collapsed {
+        width: 80px;
+    }
+}
+@media(max-width: 767px){
+    .sidebar {
+        height: 380px;
+        transition: height 0.3s ease;
+        overflow: hidden;
+        background-color: #2D2D2D;
+        border-radius: 25px;
+    }
+    .sidebar.collapsedMd {
+        height: 50px;
+    }
+}
+.historyTheme{
+    list-style-type: none;
+}
+.historyTheme>li{
+    margin-bottom: 10px;
+}

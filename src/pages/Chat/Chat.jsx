@@ -2,7 +2,7 @@ import Header from "../../components/Header/Header.jsx";
 import largeLogo from '../../assets/icons/largeLogo.png';
 import './Chat.css';
 // import styles from './Chat.module.css';
-import history from '../../assets/icons/history.png';
+
 import send from '../../assets/icons/send.png';
 import {Button, Form, Row} from "react-bootstrap";
 import {useEffect, useLayoutEffect, useRef, useState} from "react";
@@ -10,12 +10,13 @@ import {Helmet} from "react-helmet";
 import userAvatar from '../../assets/icons/avatar.png';
 import useElementHeight from "../../hooks/useElementHeight.js";
 import useElementWidth from "../../hooks/useElementWidth.js";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 
 function Chat() {
-    // const chatInputElementRef = useRef(null);
+
     const submitButton = useRef(null);
-    // const mainContentRef = useRef(null);
-    const historyTheme = useRef(null);
+
+
     const [chatInputElementRef,chatInputElementWidth] = useElementWidth();
     const [mainContentRef, mainContentWidth] = useElementWidth(null)
     const [clientWindowSize, setClientWindowSize] = useState([window.innerWidth, window.innerHeight]);
@@ -27,9 +28,8 @@ function Chat() {
     const [formControlChatRef, formControlChatWidth] = useElementWidth(null)
     const wrapperButtonSubmitRef = useRef(null);
     const chatFormWrapperRef = useRef(null);
-    const sideBarRef = useRef(null)
 
-    const [clientThemeMessagesTotalHeight, setClientThemeMessagesTotalHeight] = useState(0)
+
     useEffect(() => {
         const resizeHandler = () => setClientWindowSize([window.innerWidth, window.innerHeight])
         window.addEventListener('resize', resizeHandler);
@@ -44,21 +44,10 @@ function Chat() {
         });
         messages.forEach((message)=>resizeObserver.observe(message));
 
-        const historyThemes = historyTheme.current.querySelectorAll('li');
 
-        const resizeObserverHistoryTheme = new ResizeObserver((entries) =>{
-            let totalHeight = 0;
-            for (let entry of entries) {
-                console.log(entry.contentRect)
-                totalHeight += entry.contentRect.height;
-            }
-            setClientThemeMessagesTotalHeight(totalHeight)
-        });
-        historyThemes.forEach((theme)=>resizeObserverHistoryTheme.observe(theme));
         return () => {
             window.removeEventListener('resize', () => setClientWindowSize([window.innerWidth ,window.innerHeight]));
             messages.forEach((message)=>resizeObserver.unobserve(message));
-            historyThemes.forEach((theme)=>resizeObserverHistoryTheme.unobserve(theme));
             resizeObserver.disconnect();
         }
     },[])
@@ -136,47 +125,7 @@ function Chat() {
         }
     },[formValue,formControlChatRef,wrapperButtonSubmitRef])
 
-    //Функция скрытия сайдбара
-    const handleShowSidebar = (e) => {
-        e.currentTarget.blur();
-        setTimeout(() => {
-            document.activeElement.blur();
-        }, 0);
-        if(clientWindowSize[0] >= 768){
-            if (sideBarRef.current.classList.contains('collapsed')) {
-                sideBarRef.current.classList.remove('collapsed');
-                document.querySelector('.sideBarTitle').style.display = 'block';
-                document.querySelector('.history__theme').style.display = 'block';
-                document.querySelector('.sidebarHeader').classList.replace('justify-content-end', 'justify-content-between');
-                document.querySelector('.hr').style.display = 'block';
-                mainContentRef.current.classList.replace('col-md-11','col-md-9');
-                setTimeout(() => {
-                    sideBarRef.current.classList.replace('col-md-1','col-md-3');
-                },200)
-            }else {
-                document.querySelector('.sideBarTitle').style.display = 'none';
-                document.querySelector('.history__theme').style.display = 'none';
-                document.querySelector('.hr').style.display = 'none';
-                document.querySelector('.sidebarHeader').classList.replace('justify-content-between', 'justify-content-end');
-                sideBarRef.current.classList.replace('col-md-3','col-md-1');
-                setTimeout(() => {
-                    mainContentRef.current.classList.replace('col-md-9','col-md-11');
-                },200)
-                sideBarRef.current.classList.add('collapsed');
-            }
-        }else{
-            if (sideBarRef.current.classList.contains('collapsed-md')) {
-                sideBarRef.current.classList.remove('collapsed-md');
-                document.querySelector('.history__theme').style.display = 'block';
-                document.querySelector('.hr').style.display = 'block';
-            }else{
-                document.querySelector('.history__theme').style.display = 'none';
-                document.querySelector('.hr').style.display = 'none';
-                sideBarRef.current.classList.add('collapsed-md');
-            }
-        }
 
-    };
 
 
     return (
@@ -184,73 +133,7 @@ function Chat() {
             <Helmet><title>Чат</title></Helmet>
             <Header navbarHeight={navbarHeight} refNavbar={navbarRef}/>
             <Row>
-                <aside className='sidebar col-12 col-md-3' ref={sideBarRef}>
-                    <div className="sidebarHeader justify-content-between align-items-center d-none d-lg-flex">
-                        <h5 className='sideBarTitle'>История тем общения</h5>
-                        <Button className='clear__button'>
-                            <img src={history} alt='История' className='p-2' onClick={handleShowSidebar}/>
-                        </Button>
-                    </div>
-                    <div className="d-flex sidebarHeader-md ps-3 pt-1 pe-3 pb-0 justify-content-between align-items-center d-lg-none">
-                        <h6 className='mb-0'>История тем общения</h6>
-                        <Button className='clear__button'>
-                            <img src={history} alt='История' className='p-2' onClick={handleShowSidebar}/>
-                        </Button>
-                    </div>
-                    <hr className="mt-1 hr"/>
-                    <ul className='history__theme ps-0 pe-0' ref={historyTheme}>
-                        <li className='active'>
-                            <a href="">
-                                <div className="justify-content-between d-flex align-items-center">
-                                    <div className="col-7">Знакомство</div>
-                                    <div className="col-5 d-flex align-items-center">
-                                        <div className="col-12 historyTheme-time pe-2 text-end">
-                                            02.11 18:17
-                                        </div>
-                                        <div className="col-auto active-icon"></div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li className=''>
-                            <a href="">
-                                <div className="justify-content-between d-flex align-items-center">
-                                    <div className="col-7">Что такое JS, переменные, циклы, методы, объекты.</div>
-                                    <div className="col-5 d-flex align-items-center">
-                                        <div className="col-12 historyTheme-time pe-2 text-end">
-                                            02.11 18:17
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li className=''>
-                            <a href="">
-                                <div className="justify-content-between d-flex align-items-center">
-                                    <div className="col-7">Первые шаги в JS</div>
-                                    <div className="col-5 d-flex align-items-center">
-                                        <div className="col-12 historyTheme-time pe-2 text-end">
-                                            02.11 18:17
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li className=''>
-                            <a href="">
-                                <div className="justify-content-between d-flex align-items-center">
-                                    <div className="col-7">Часы на JS</div>
-                                    <div className="col-5 d-flex align-items-center">
-                                        <div className="col-12 historyTheme-time pe-2 text-end">
-                                            02.11 18:17
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </aside>
+                <Sidebar clientWindowSize={clientWindowSize} mainContentRef={mainContentRef} />
                 <main className="col-12 col-md-9 ps-2 pe-0 mt-3 mt-md-0 d-flex flex-column wrapperChat"
                       ref={mainContentRef}>
                     <div className="chat_header text-md-start text-center">
