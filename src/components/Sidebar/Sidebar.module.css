@@ -2,6 +2,16 @@
 .active{
     border-radius: 0.5rem;
     background-color: #111111;
+    transition: all 0.2s ease;
+}
+.historyTheme {
+    list-style-type: none;
+
+    overflow-y: auto;  /* Задаем авто-прокрутку */
+    height: 100%;
+}
+.historyTheme a, .historyTheme a:hover, .historyTheme a:focus{
+    color: white;
 }
 .historyTheme>li{
     padding-right: 1rem;
@@ -9,6 +19,7 @@
     padding-bottom: 0.2rem;
     padding-left: 2rem;
     position: relative;
+    margin-bottom: 10px;
 }
 .historyTheme>li::before{
     content: '';
@@ -31,8 +42,12 @@
     border-radius: 3px;
 }
 @media(min-width: 768px){
+    .historyTheme{
+        max-height: 100%; /* Установите ограничение по высоте */
+    }
     .sidebar {
         width: 25%;
+        height: 100%;
         transition: width 0.3s ease;
         overflow: hidden;
     }
@@ -41,6 +56,9 @@
     }
 }
 @media(max-width: 767px){
+    .historyTheme{
+        max-height: 300px; /* Установите ограничение по высоте */
+    }
     .sidebar {
         height: 380px;
         transition: height 0.3s ease;
@@ -51,10 +69,4 @@
     .sidebar.collapsedMd {
         height: 50px;
     }
-}
-.historyTheme{
-    list-style-type: none;
-}
-.historyTheme>li{
-    margin-bottom: 10px;
 }

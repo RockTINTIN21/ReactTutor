@@ -4,11 +4,9 @@ function TotalHeight({refComponent,onHeightChange,querySelector}) {
         useEffect(() => {
             if(refComponent && querySelector){
                 const totalHeightObserver = refComponent.current.querySelectorAll(querySelector);
-
                 const resizeObserverComponent = new ResizeObserver((entries) =>{
                     let totalHeight = 0;
                     for (let entry of entries) {
-                        console.log(entry.contentRect)
                         totalHeight += entry.contentRect.height;
                     }
                     onHeightChange(totalHeight)
