@@ -5,10 +5,13 @@ function TotalHeight({refComponent,onHeightChange,querySelector}) {
             if(refComponent && querySelector){
                 const totalHeightObserver = refComponent.current.querySelectorAll(querySelector);
                 const resizeObserverComponent = new ResizeObserver((entries) =>{
+                    // console.log('Кол-во тем:',entries.length);
                     let totalHeight = 0;
                     for (let entry of entries) {
-                        totalHeight += entry.contentRect.height;
+                        // console.log('entry:',entry, 'entryHeight:',entry.target.getBoundingClientRect().height)
+                        totalHeight += entry.target.getBoundingClientRect().height;
                     }
+                    // console.log('totalheight:', totalHeight);
                     onHeightChange(totalHeight)
                 });
                 totalHeightObserver.forEach((theme)=>resizeObserverComponent.observe(theme));

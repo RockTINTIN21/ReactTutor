@@ -6,57 +6,115 @@ import styles from "./Sidebar.module.css";
 import { v4 as uuidv4 } from 'uuid';
 // eslint-disable-next-line react/prop-types
 const themeMessages = [
+    {
+        title: 'Введение в программирование',
+        themeId: uuidv4(),
+        date: new Date('2023-01-15T10:30:00'),
+    },
+    {
+        title: 'Как выбрать направление в IT',
+        themeId: uuidv4(),
+        date: new Date('2023-02-05T14:15:00'),
+    },
+    {
+        title: 'Основы JavaScript: переменные, циклы, функции',
+        themeId: uuidv4(),
+        date: new Date('2023-03-12T09:45:00'),
+    },
+    {
+        title: 'Создание первого проекта на HTML и CSS',
+        themeId: uuidv4(),
+        date: new Date('2023-04-02T16:00:00'),
+    },
+    {
+        title: 'Асинхронный код в JavaScript',
+        themeId: uuidv4(),
+        date: new Date('2023-05-20T11:20:00'),
+    },
+    {
+        title: 'Работа с DOM в JavaScript',
+        themeId: uuidv4(),
+        date: new Date('2023-06-10T15:30:00'),
+    },
+    {
+        title: 'Знакомство с фреймворком React',
+        themeId: uuidv4(),
+        date: new Date('2023-07-15T13:10:00'),
+    },
+    {
+        title: 'Использование Git и GitHub для работы над проектами',
+        themeId: uuidv4(),
+        date: new Date('2023-08-01T10:50:00'),
+    },
+    {
+        title: 'Создание одностраничного приложения на React',
+        themeId: uuidv4(),
+        date: new Date('2023-08-20T14:40:00'),
+    },
+    {
+        title: 'Основы тестирования и отладки кода',
+        themeId: uuidv4(),
+        date: new Date('2023-09-05T09:25:00'),
+    },
+    {
+        title: 'Анимации и работа с Canvas в JavaScript',
+        themeId: uuidv4(),
+        date: new Date('2023-09-22T18:05:00'),
+    },
+    {
+        title: 'Управление состоянием в React с помощью Redux',
+        themeId: uuidv4(),
+        date: new Date('2023-10-10T12:35:00'),
+    },
+    {
+        title: 'Подключение к API и работа с запросами',
+        themeId: uuidv4(),
+        date: new Date('2023-10-25T17:10:00'),
+    },
+    {
+        title: 'Создание и стилизация многостраничных сайтов',
+        themeId: uuidv4(),
+        date: new Date('2023-11-12T08:45:00'),
+    },
+    {
+        title: 'Введение в TypeScript для JavaScript-разработчиков',
+        themeId: uuidv4(),
+        date: new Date('2023-11-28T13:55:00'),
+    },
+    {
+        title: 'Разработка серверной части с Node.js и Express',
+        themeId: uuidv4(),
+        date: new Date('2023-12-15T16:20:00'),
+    },
+    {
+        title: 'Создание базы данных и работа с MongoDB',
+        themeId: uuidv4(),
+        date: new Date('2024-01-05T10:10:00'),
+    },
+    {
+        title: 'Проектирование RESTful API',
+        themeId: uuidv4(),
+        date: new Date('2024-01-20T11:45:00'),
+    },
+    {
+        title: 'Деплой приложения на облачный сервер',
+        themeId: uuidv4(),
+        date: new Date('2024-02-10T14:30:00'),
+    },
+];
 
-    {
-        title:'Знакомство',
-        themeId:uuidv4(),
-        date:new Date(),
-    },
-    {
-        title:'Выбор направления',
-        themeId:uuidv4(),
-        date:new Date(),
-    },
-    {
-        title:'Что такое JS, переменные, циклы, методы, объекты.',
-        themeId:uuidv4(),
-        date:new Date(),
-    },
-    {
-        title:'Первые шаги в JS',
-        themeId:uuidv4(),
-        date:new Date(),
-    },
-    {
-        title:'Часы на JS',
-        themeId:uuidv4(),
-        date:new Date(),
-    },
-    {
-        title:'Первый пет-проект',
-        themeId:uuidv4(),
-        date:new Date(),
-    },
-    {
-        title:'Тест',
-        themeId:uuidv4(),
-        date:new Date(),
-    },
-
-]
-function Sidebar({clientWindowSize,mainContentRef}){
+function Sidebar({clientWindowSize,mainContentRef,mainContentHeight}){
     const historyTheme = useRef(null);
     const sideBarRef = useRef(null)
     const [height,setHeight] = useState(0);
     const [isActive,setIsActive] = useState({show:false,element:themeMessages[0],id:null});
-
-
+    const [mainContentHeightq,setMainContentHeightq] = useState(null);
     const handleHeightChange = (newHeight) => {
         setHeight(newHeight);
     }
-    useEffect(() => {
-        console.log('actualHeight:',height);
-    }, [height]);
+    // useEffect(() => {
+    //     console.log('Хук высоты установлен на:',mainContentHeight)
+    // }, [mainContentHeight]);
     useEffect(()=>{
         if(themeMessages.length){
             const firstHistoryTheme = historyTheme.current.querySelectorAll('li')[0]
@@ -130,13 +188,14 @@ function Sidebar({clientWindowSize,mainContentRef}){
     useEffect(()=>{
         if(themeMessages.length){
             if(clientWindowSize[0] >= 768){
-                if(historyTheme.current.clientHeight >= height){
+                sideBarRef.current.style.height = mainContentHeight + 'px'
+                if(height >= historyTheme.current.clientHeight * 0.80){
                     historyTheme.current.style.overflowY = `scroll`;
                 }else{
                     historyTheme.current.style.overflowY = `hidden`;
                 }
             }else{
-                if(historyTheme.current.clientHeight >= height){
+                if(height > historyTheme.current.clientHeight * 0.80){
                     historyTheme.current.style.overflowY = `scroll`;
                 }else{
                     historyTheme.current.style.overflowY = `hidden`;
@@ -144,7 +203,7 @@ function Sidebar({clientWindowSize,mainContentRef}){
             }
         }
 
-    },[height,clientWindowSize]);
+    },[height,clientWindowSize,mainContentHeight]);
 
     return (
         <aside className={`${styles.sidebar} col-12 col-md-3`} ref={sideBarRef}>
@@ -168,7 +227,7 @@ function Sidebar({clientWindowSize,mainContentRef}){
             <ul className={`${styles.historyTheme} ps-0 pe-0 pb-0 mb-0`} ref={historyTheme}>
                 {themeMessages.length > 0 ? (
                     themeMessages.map((themeMessage, key) => (
-                        <li key={key} onClick={handleClickTheme} data-id={themeMessage.themeId}>
+                        <li key={key} onClick={handleClickTheme} data-id={themeMessage.themeId} >
                             <a href="#">
                                 <div className="justify-content-between d-flex align-items-center">
                                     <div className="col-7">{themeMessage.title}</div>

@@ -15,8 +15,6 @@ import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 function Chat() {
 
     const submitButton = useRef(null);
-
-
     const [chatInputElementRef,chatInputElementWidth] = useElementWidth();
     const [mainContentRef, mainContentWidth] = useElementWidth(null)
     const [clientWindowSize, setClientWindowSize] = useState([window.innerWidth, window.innerHeight]);
@@ -28,7 +26,7 @@ function Chat() {
     const [formControlChatRef, formControlChatWidth] = useElementWidth(null)
     const wrapperButtonSubmitRef = useRef(null);
     const chatFormWrapperRef = useRef(null);
-
+    const [mainContentHeight,setMainContentHeight] = useState(0);
 
     useEffect(() => {
         const resizeHandler = () => setClientWindowSize([window.innerWidth, window.innerHeight])
@@ -51,7 +49,9 @@ function Chat() {
             resizeObserver.disconnect();
         }
     },[])
-
+    useEffect(() => {
+        console.log('Хук высоты установлен1 на:',mainContentHeight)
+    }, [mainContentHeight]);
     // Хук автоматического скролла в блоке чата.
     useLayoutEffect(() => {
         if(clientChatTotalHeight > clientChatMaxHeight){
@@ -75,13 +75,18 @@ function Chat() {
     // Хук изменения высоты блока чата с сообщениями.
     useLayoutEffect(() => {
         if(clientWindowSize[1] <= 767){
-            console.log('Вызвано')
+            // console.log('Вызвано')
             mainContentRef.current.style.height = `${clientWindowSize[1] + 100}px`;
+
         }else{
-            mainContentRef.current.style.height = `${((clientWindowSize[1] - navbarHeight) * 0.99) - chatFormWrapperRef.current.getBoundingClientRect().height}px`;
+            // console.log('mainContentRef.current.style.height')
+            const mathMainHeight = ((clientWindowSize[1] - navbarHeight) * 0.99) - chatFormWrapperRef.current.getBoundingClientRect().height
+            setMainContentHeight(mathMainHeight)
+
+            mainContentRef.current.style.height = mainContentHeight + 'px';
         }
 
-    },[navbarHeight,clientWindowSize])
+    },[navbarHeight,clientWindowSize,mainContentHeight])
 
     // Хук изменения длины окна чата с сообщениями.
     useEffect(() => {
@@ -95,7 +100,7 @@ function Chat() {
         if(formControlChatRef){
             formControlChatRef.current.style.width = `${mainContentRef.current.offsetWidth}px`;
         }
-        console.log('Вызвано!',chatInputElementWidth)
+        // console.log('Вызвано!',chatInputElementWidth)
     }, [clientWindowSize,mainContentWidth]);
 
     // Функция измения высоты поля ввода и включения скролла в поле ввода.
@@ -131,11 +136,10 @@ function Chat() {
     return (
         <div className='h-100 p-3 p-md-0'>
             <Helmet><title>Чат</title></Helmet>
-            <Header navbarHeight={navbarHeight} refNavbar={navbarRef}/>
+            <Header navbarHeight={navbarHeight} refNavbar={navbarRef} />
             <Row>
-                <Sidebar clientWindowSize={clientWindowSize} mainContentRef={mainContentRef} />
-                <main className="col-12 col-md-9 ps-2 pe-0 mt-3 mt-md-0 d-flex flex-column wrapperChat"
-                      ref={mainContentRef}>
+                <Sidebar clientWindowSize={clientWindowSize} mainContentRef={mainContentRef} mainContentHeight={mainContentHeight}/>
+                <main className="col-12 col-md-9 ps-2 pe-0 mt-3 mt-md-0 d-flex flex-column wrapperChat" ref={mainContentRef}>
                     <div className="chat_header text-md-start text-center">
                         <h4>Чат с ReactTutor</h4>
                         <div className="date"><span>20.10.2024</span></div>
