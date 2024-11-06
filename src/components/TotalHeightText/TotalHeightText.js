@@ -1,10 +1,11 @@
 import {useEffect} from "react";
 
-function TotalHeight({refComponent,onHeightChange,querySelector}) {
+function TotalHeightText({refComponent,onHeightChange,querySelector}) {
         useEffect(() => {
             if(refComponent && querySelector){
                 const totalHeightObserver = refComponent.current.querySelectorAll(querySelector);
                 const resizeObserverComponent = new ResizeObserver((entries) =>{
+                    // console.log('Компонент:',refComponent)
                     // console.log('Кол-во тем:',entries.length);
                     let totalHeight = 0;
                     for (let entry of entries) {
@@ -23,4 +24,4 @@ function TotalHeight({refComponent,onHeightChange,querySelector}) {
         },[refComponent,querySelector,onHeightChange]);
     return null
 }
-export default TotalHeight;
+export default TotalHeightText;

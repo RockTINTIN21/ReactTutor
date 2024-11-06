@@ -1,9 +1,10 @@
 import {Button} from "react-bootstrap";
 import history from "../../assets/icons/history.png";
-import {useEffect, useInsertionEffect, useRef, useState} from "react";
-import TotalHeight from "../TotalHeightComponent/TotalHeight.js";
+import {useContext, useEffect, useInsertionEffect, useRef, useState} from "react";
+import TotalHeightText from "../TotalHeightText/TotalHeightText.js";
 import styles from "./Sidebar.module.css";
 import { v4 as uuidv4 } from 'uuid';
+import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.jsx";
 // eslint-disable-next-line react/prop-types
 const themeMessages = [
     {
@@ -103,15 +104,16 @@ const themeMessages = [
     },
 ];
 
-function Sidebar({clientWindowSize,mainContentRef,mainContentHeight}){
+function Sidebar({chatPanel}){
     const historyTheme = useRef(null);
     const sideBarRef = useRef(null)
     const [height,setHeight] = useState(0);
     const [isActive,setIsActive] = useState({show:false,element:themeMessages[0],id:null});
-    const [mainContentHeightq,setMainContentHeightq] = useState(null);
+    // const [mainContentHeightq,setMainContentHeightq] = useState(null);
     const handleHeightChange = (newHeight) => {
         setHeight(newHeight);
     }
+    const {mainContentSize, clientWindowSize} = useContext(ScreenSizeContext);
     // useEffect(() => {
     //     console.log('Хук высоты установлен на:',mainContentHeight)
     // }, [mainContentHeight]);
@@ -156,7 +158,7 @@ function Sidebar({clientWindowSize,mainContentRef,mainContentHeight}){
                 document.querySelector('.sidebarHeader').classList.replace('justify-content-end', 'justify-content-between');
                 document.querySelector('.hr').style.display = 'block';
                 // eslint-disable-next-line react/prop-types
-                mainContentRef.current.classList.replace('col-md-11','col-md-9');
+                chatPanel.current.classList.replace('col-md-11','col-md-9');
                 setTimeout(() => {
                     sideBarRef.current.classList.replace('col-md-1','col-md-3');
                 },200)
@@ -166,8 +168,7 @@ function Sidebar({clientWindowSize,mainContentRef,mainContentHeight}){
                 document.querySelector('.hr').style.display = 'none';
                 document.querySelector(`.sidebarHeader`).classList.replace('justify-content-between', 'justify-content-end');
                 setTimeout(() => {
-                    // eslint-disable-next-line react/prop-types
-                    mainContentRef.current.classList.replace('col-md-9','col-md-11');
+                    chatPanel.current.classList.replace('col-md-9','col-md-11');
                 },200)
                 sideBarRef.current.classList.replace('col-md-3','col-md-1');
                 sideBarRef.current.classList.add(`${styles.collapsed}`);
@@ -188,7 +189,8 @@ function Sidebar({clientWindowSize,mainContentRef,mainContentHeight}){
     useEffect(()=>{
         if(themeMessages.length){
             if(clientWindowSize[0] >= 768){
-                sideBarRef.current.style.height = mainContentHeight + 'px'
+                // console.log('mainContentRef:',chatPanel)
+                sideBarRef.current.style.height = mainContentSize + 'px'
                 if(height >= historyTheme.current.clientHeight * 0.80){
                     historyTheme.current.style.overflowY = `scroll`;
                 }else{
@@ -203,11 +205,11 @@ function Sidebar({clientWindowSize,mainContentRef,mainContentHeight}){
             }
         }
 
-    },[height,clientWindowSize,mainContentHeight]);
+    },[height,clientWindowSize,mainContentSize]);
 
     return (
         <aside className={`${styles.sidebar} col-12 col-md-3`} ref={sideBarRef}>
-            <TotalHeight refComponent={sideBarRef} querySelector='li' onHeightChange={handleHeightChange}/>
+            <TotalHeightText refComponent={sideBarRef} querySelector='li' onHeightChange={handleHeightChange}/>
             <div className={`justify-content-between sidebarHeader align-items-center d-none d-lg-flex `}>
                 <h5 className='sideBarTitle'>История тем общения</h5>
                 <Button className='clear__button'>
@@ -255,7 +257,7 @@ function Sidebar({clientWindowSize,mainContentRef,mainContentHeight}){
                         </li>
                     ))
                 ) : (
-                    <li>Темы отсутствуют</li> // Сообщение, если тем нет
+                    <li>Темы отсутствуют</li>
                 )}
             </ul>
 

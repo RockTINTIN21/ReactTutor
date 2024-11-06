@@ -2,7 +2,15 @@ import {Nav, Navbar} from "react-bootstrap";
 import './Header.css';
 import Logo from '../../assets/icons/Logo.png';
 import gitLogo from '../../assets/icons/gitLogo.png';
-function Header({refNavbar}){
+import {useContext, useEffect} from "react";
+import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.jsx";
+import useElementHeight from "../../hooks/useElementHeight.js";
+function Header(){
+    const [refNavbar,navbarHeight] = useElementHeight(null);
+    const {setNavbarHeight} = useContext(ScreenSizeContext);
+    useEffect(()=>{
+        setNavbarHeight(navbarHeight)
+    },[navbarHeight])
     return(
         <Navbar collapseOnSelect expand="lg" className='w-100' ref={refNavbar}>
             <Navbar.Brand href="/">
