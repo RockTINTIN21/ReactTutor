@@ -5,7 +5,6 @@ import {useState} from "react";
 import {Helmet} from "react-helmet";
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import ChatPanel from "../../components/ChatPanel/ChatPanel.jsx";
-import {ScreenSizeProvider} from "../../contexts/ScreenSizeContext.jsx";
 
 function Chat() {
     const [chatPanelRef, setChatPanelRef] = useState(null);

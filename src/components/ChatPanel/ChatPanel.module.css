@@ -1,0 +1,115 @@
+.chatHeader > hr {
+    color: #373737;
+}
+.chatHeader span {
+    font-weight: 600;
+}
+.date {
+    color: #6D6D6D;
+}
+.headerMessage {
+    font-size: 20px;
+}
+.contentMessage {
+    display: inline-block;
+    padding: 0.7rem;
+}
+.footerMessage {
+    color: #6D6D6D;
+    font-size: 12px;
+}
+.contentMessageReactTutor {
+    border-radius: 0px 30px 30px 30px;
+    background-color: #2D2D2D;
+}
+.contentMessageUser {
+    border-radius: 30px 30px 30px 30px;
+    background-color: #4A4A4A;
+}
+.headerMessageReactTutor {
+    color: #61DAFB;
+}
+.headerMessageUser {
+    color: #E0E0E0;
+}
+
+.clearButtonSubmit {
+    background-color: transparent;
+    border: none;
+    z-index: 2;
+}
+
+.formControlChat {
+    z-index: 1;
+    border-radius: 30px;
+    border-color: transparent;
+    background-color: #4A4A4A;
+    color: #E1E3E7;
+    box-shadow: none;
+    line-height: 1.5;
+    box-sizing: border-box;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 60px;
+    font-size: 16px;
+    resize: none;
+    overflow: hidden;
+    min-height: 3rem;
+    max-height: 250px;
+}
+.buttonSubmit {
+    background-color: transparent !important;
+    border: none;
+    border: 0;
+}
+.formControlChat:active, .formControlChat:focus, .formControlChat:placeholder-shown {
+    border-radius: 30px;
+    border-color: transparent;
+    background-color: #4A4A4A !important;
+    color: white;
+    box-shadow: none;
+    line-height: 1.5;
+    box-sizing: border-box;
+    min-height: 3rem;
+    overflow: hidden;
+}
+
+.formControlChat::placeholder {
+    color: #C7C7C7;
+}
+.chat::-webkit-scrollbar, .formControlChat::-webkit-scrollbar {
+    width: 7px;
+    background-color: #2D2D2D;
+    border-radius: 1rem;
+}
+.chat::-webkit-scrollbar-thumb {
+    background-color: #4A4A4A;
+    border-radius: 1rem;
+}
+.formControlChat::-webkit-scrollbar {
+    width: 7px;
+    background-color: transparent;
+    border-radius: 1rem;
+}
+
+.formControlChat::-webkit-scrollbar-thumb {
+    background-color: #2D2D2D;
+    border-radius: 1rem;
+}
+.chatFormWrapper {
+    background-color: transparent;
+}
+.wrapperChat {
+    transition: max-width 0.3s ease; /* Плавное изменение ширины */
+}
+/* Устанавливаем разные значения max-width для имитации Bootstrap-колонок */
+.wrapperChatExpanded {
+    max-width: 75%; /* Эквивалент col-md-9 */
+}
+
+.wrapperChatCollapsed {
+    max-width: 91.6667%; /* Эквивалент col-md-11 */
+}
+
+

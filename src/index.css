@@ -10,4 +10,16 @@ html, body {
   background-color: #111111;
   height: 100%;
 }
+.clearButton {
+  background-color: transparent !important;
+  border: none;
+  border: 0;
+  padding: 0;
+}
+.clearButton:hover, .clearButton:active, .clearButton:focus {
+  background-color: #222222 !important;
+}
+.clearButton:not(:hover):not(:active):not(:focus) {
+  background-color: transparent !important;
+}
 
