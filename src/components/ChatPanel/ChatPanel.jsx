@@ -21,7 +21,7 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
     const [mainContentRef, mainContentWidth] = useElementWidth(null)
     const {setMainContentSize, clientWindowSize,navbarHeight} = useContext(ScreenSizeContext);
     const [mainHeight,setMainHeight] = useState(0);
-    const [layoutState, setLayoutState] = useState({isChatScroll:false,isFormScroll:false,isDisabledButton:true})
+    const [layoutState, setLayoutState] = useState({isChatScroll:false,isFormScroll:false,isDisabledButton:true,isDesktop:true})
 
     useEffect(() => {
         setMainContentSize(mainHeight);
@@ -29,7 +29,19 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
     const handleHeightChange = (newHeight)=>{
         setClientChatTotalHeight(newHeight);
     }
-
+    useEffect(() => {
+        if(clientWindowSize[0] >= 768){
+            setLayoutState(prevState => ({
+                ...prevState,
+                isDesktop: true
+            }))
+        }else{
+            setLayoutState(prevState => ({
+                ...prevState,
+                isDesktop: false
+            }))
+        }
+    },[clientWindowSize])
     // Хук автоматического скролла в блоке чата.
     useEffect(() => {
         setLayoutState((prevState)=>({
@@ -103,7 +115,7 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
 
     return (
 
-        <main className={`col-12 ps-2 pe-0 mt-3 mt-md-0 d-flex flex-column ${styles.wrapperChat}  ${sidebarIsCollapsed ? styles.wrapperChatCollapsed : styles.wrapperChatExpanded}`}
+        <main className={`col-12 ps-2 pe-0 mt-3 mt-md-0 d-flex flex-column ${styles.wrapperChat}  ${(layoutState.isDesktop) ? sidebarIsCollapsed ? styles.wrapperChatCollapsed : styles.wrapperChatExpanded : 'col-12'}`}
               ref={mainContentRef}>
             <TotalHeightText refComponent={mainContentRef} querySelector='.message'
                              onHeightChange={handleHeightChange}/>
