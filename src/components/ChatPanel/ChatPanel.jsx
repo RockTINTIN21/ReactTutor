@@ -8,7 +8,8 @@ import send from "../../assets/icons/send.png";
 import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.jsx";
 import TotalHeightText from "../TotalHeightText/TotalHeightText.js";
 import styles from './ChatPanel.module.css'
-function ChatPanel({onChangeChatPanel}) {
+import classNames from 'classnames'
+function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
     const [chatRef,clientChatMaxHeight] = useElementHeight(null)
     const submitButton = useRef(null);
     const [chatInputElementRef,chatInputElementWidth] = useElementWidth();
@@ -20,6 +21,7 @@ function ChatPanel({onChangeChatPanel}) {
     const [mainContentRef, mainContentWidth] = useElementWidth(null)
     const {setMainContentSize, clientWindowSize,navbarHeight} = useContext(ScreenSizeContext);
     const [mainHeight,setMainHeight] = useState(0);
+    const [layoutState, setLayoutState] = useState({isChatScroll:false,isFormScroll:false,isDisabledButton:true})
 
     useEffect(() => {
         setMainContentSize(mainHeight);
@@ -27,27 +29,23 @@ function ChatPanel({onChangeChatPanel}) {
     const handleHeightChange = (newHeight)=>{
         setClientChatTotalHeight(newHeight);
     }
+
     // Хук автоматического скролла в блоке чата.
-    useLayoutEffect(() => {
-        if(clientChatTotalHeight > clientChatMaxHeight){
-
-            chatRef.current.style.overflowY = `scroll`;
-            chatRef.current.classList.add('pe-3');
-        }else{
-            chatRef.current.classList.remove('pe-3');
-            chatRef.current.style.overflowY = `hidden`;
-        }
-
+    useEffect(() => {
+        setLayoutState((prevState)=>({
+            ...prevState,
+            isChatScroll:clientChatTotalHeight > clientChatMaxHeight,
+        }));
     }, [clientChatMaxHeight,clientChatTotalHeight,formValue]);
 
     // Функция блокировки кнопки отправки.
     const handleChangeTextarea = (e) =>{
-        if(e.target.value.length){
-            submitButton.current.classList.remove('disabled');
-        }else{
-            submitButton.current.classList.add('disabled');
-        }
+        setLayoutState((prevState)=>({
+            ...prevState,
+            isDisabledButton:e.target.value.length < 1,
+        }));
     }
+
     // Хук изменения высоты блока чата с сообщениями.
     useLayoutEffect(() => {
         onChangeChatPanel(mainContentRef)
@@ -82,30 +80,30 @@ function ChatPanel({onChangeChatPanel}) {
         const minHeight = parseFloat(computedStyles.minHeight);
         const height = parseFloat(computedStyles.height);
         formControlChatRef.current.style.height = `${formControlChatRef.current.scrollHeight}px`;
-
-        if (height > minHeight) {
-            wrapperButtonSubmitRef.current.style.alignItems = 'end';
-            if(height > 192) {
-                formControlChatRef.current.style.overflowY = `scroll`;
-                formControlChatRef.current.style.height = `250px`;
-            }
-        } else {
-            formControlChatRef.current.style.overflowY = `hidden`;
-            wrapperButtonSubmitRef.current.style.alignItems = 'center';
-        }
+        console.log('minHeight:',minHeight,'height:',height)
+        setLayoutState(prevState=>({
+            ...prevState,
+            isFormScroll:height > 192
+        }))
     };
+    useEffect(()=>{
+        console.log(layoutState.isFormScroll);
+
+    },[layoutState.isFormScroll]);
     // Хук сброса высоты по умолчанию.
     useLayoutEffect(() => {
         if(!formValue.length){
-            formControlChatRef.current.style.overflowY = `hidden`;
-            wrapperButtonSubmitRef.current.style.alignItems = 'center';
+            setLayoutState(prevState=>({
+                ...prevState,
+                isFormScroll:false
+            }))
             formControlChatRef.current.style.height = '3rem';
         }
     },[formValue,formControlChatRef,wrapperButtonSubmitRef])
 
     return (
 
-        <main className={`col-12 col-md-9 ps-2 pe-0 mt-3 mt-md-0 d-flex flex-column ${styles.wrapperChat}`}
+        <main className={`col-12 ps-2 pe-0 mt-3 mt-md-0 d-flex flex-column ${styles.wrapperChat}  ${sidebarIsCollapsed ? styles.wrapperChatCollapsed : styles.wrapperChatExpanded}`}
               ref={mainContentRef}>
             <TotalHeightText refComponent={mainContentRef} querySelector='.message'
                              onHeightChange={handleHeightChange}/>
@@ -114,7 +112,9 @@ function ChatPanel({onChangeChatPanel}) {
                 <div className={styles.date}><span>20.10.2024</span></div>
                 <hr/>
             </div>
-            <div className={`h-100 mh-100 pb-5 mb-2 ${styles.chat}`} ref={chatRef}>
+            <div className={`h-100 mh-100 pb-5 mb-2  
+            ${layoutState.isChatScroll && `${styles.chatScroll} pe-3`}
+            `} ref={chatRef}>
                 <div
                     className={`d-flex flex-column w-100 align-items-start message messageReactTutor`}>
                     <div className={`${styles.headerMessage} ${styles.headerMessageReactTutor}`}>
@@ -228,7 +228,7 @@ function ChatPanel({onChangeChatPanel}) {
                     <div className="col-10 col-md-11 ps-0">
                         <Form.Control
                             as='textarea'
-                            className={styles.formControlChat}
+                            className={`${styles.formControlChat} ${layoutState.isFormScroll && `overflow-y-scroll align-items-end ${styles.formScroll}`}`}
                             ref={formControlChatRef}
                             rows={1}
                             onInput={handleInput}
@@ -239,7 +239,7 @@ function ChatPanel({onChangeChatPanel}) {
                     <div
                         className="col-2 ps-md-4 me-0 ps-lg-2 ps-xxl-4 ps-0 m-0 col-md-1 d-flex"
                         ref={wrapperButtonSubmitRef}>
-                        <Button className={`${styles.buttonSubmit} disabled`} ref={submitButton}>
+                        <Button className={`${styles.buttonSubmit} ${layoutState.isDisabledButton && 'disabled'}`} ref={submitButton}>
                             <img src={send} alt='Отправить'/>
                         </Button>
                     </div>

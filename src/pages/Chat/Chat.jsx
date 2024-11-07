@@ -8,15 +8,17 @@ import ChatPanel from "../../components/ChatPanel/ChatPanel.jsx";
 
 function Chat() {
     const [chatPanelRef, setChatPanelRef] = useState(null);
-    const handleChangeChatPanel = (chatPanelRef) => {
-        setChatPanelRef(chatPanelRef);}
+    const [sidebarIsCollapsed, setSidebarIsCollapsed] = useState(false);
+    const handleChangeChatPanel = (chatPanelRef) => setChatPanelRef(chatPanelRef);
+    const handleChangeIsCollapsed = (isCollapsed) => setSidebarIsCollapsed(isCollapsed);
+
     return (
             <div className='h-100 p-3 p-md-0'>
                 <Helmet><title>Чат</title></Helmet>
                 <Header/>
                 <Row>
-                    <Sidebar chatPanel={chatPanelRef}/>
-                    <ChatPanel onChangeChatPanel={handleChangeChatPanel}/>
+                    <Sidebar chatPanel={chatPanelRef} onChangeIsCollapsed={handleChangeIsCollapsed}/>
+                    <ChatPanel onChangeChatPanel={handleChangeChatPanel} sidebarIsCollapsed={sidebarIsCollapsed}/>
                 </Row>
             </div>
 

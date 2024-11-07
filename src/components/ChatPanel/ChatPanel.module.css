@@ -78,12 +78,15 @@
 .formControlChat::placeholder {
     color: #C7C7C7;
 }
-.chat::-webkit-scrollbar, .formControlChat::-webkit-scrollbar {
+.chatScroll::-webkit-scrollbar, .formControlChat::-webkit-scrollbar {
     width: 7px;
     background-color: #2D2D2D;
     border-radius: 1rem;
 }
-.chat::-webkit-scrollbar-thumb {
+.chatScroll{
+    overflow-y: scroll;
+}
+.chatScroll::-webkit-scrollbar-thumb {
     background-color: #4A4A4A;
     border-radius: 1rem;
 }
@@ -101,7 +104,7 @@
     background-color: transparent;
 }
 .wrapperChat {
-    transition: max-width 0.3s ease; /* Плавное изменение ширины */
+    transition: max-width 0.2s ease; /* Плавное изменение ширины */
 }
 /* Устанавливаем разные значения max-width для имитации Bootstrap-колонок */
 .wrapperChatExpanded {
@@ -111,5 +114,9 @@
 .wrapperChatCollapsed {
     max-width: 91.6667%; /* Эквивалент col-md-11 */
 }
+.formScroll{
+    height: 250px;
+}
+
 
 

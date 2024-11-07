@@ -104,7 +104,7 @@ const themeMessages = [
     },
 ];
 
-function Sidebar({chatPanel}){
+function Sidebar({chatPanel,onChangeIsCollapsed}){
     const historyTheme = useRef(null);
     const sideBarRef = useRef(null)
     const [height,setHeight] = useState(0);
@@ -119,7 +119,19 @@ function Sidebar({chatPanel}){
         setHeight(newHeight);
     }
     const {mainContentSize, clientWindowSize} = useContext(ScreenSizeContext);
-
+    useEffect(() => {
+        if(clientWindowSize[0] >= 768){
+            setLayoutState(prevState => ({
+                ...prevState,
+                isDesktop: true
+            }))
+        }else{
+            setLayoutState(prevState => ({
+                ...prevState,
+                isDesktop: false
+            }))
+        }
+    },[clientWindowSize])
     const handleClickTheme = (e) =>{
         const newId = e.currentTarget.dataset.id
         if(isActive.element !== newId){
@@ -130,9 +142,22 @@ function Sidebar({chatPanel}){
         }
     }
 
-    useEffect(() => {
-        console.log('qwe',layoutState)
-    }, [layoutState]);
+
+    useEffect(()=>{
+        if(layoutState.isDesktop && layoutState.isCollapsed){
+            const handleTransitionEnd = (e) => {
+                if(e.propertyName === 'width'){
+                    onChangeIsCollapsed(true)
+                }
+            }
+            sideBarRef.current.addEventListener('transitionend',handleTransitionEnd);
+            return () => {
+                sideBarRef.current.removeEventListener('transitionend',handleTransitionEnd);
+            }
+        }
+
+    },[layoutState])
+
     //Функция скрытия сайдбара
     const handleShowSidebar = (e) => {
         e.currentTarget.blur();
@@ -144,51 +169,38 @@ function Sidebar({chatPanel}){
                 ...prevState,
                 isDesktop:true,
             }));
-            // layoutState.isDesktop = true
             if (sideBarRef.current.classList.contains(`${styles.collapsed}`)) {
                 setLayoutState(prevState => ({
                     ...prevState,
                     isCollapsed:false,
                 }));
-                // sideBarRef.current.classList.remove(`${styles.collapsed}`);
-                // document.querySelector('.sideBarTitle').style.display = 'block';
-                // document.querySelector(`.${styles.historyTheme}`).style.display = 'block';
-                // document.querySelector('.sidebarHeader').classList.replace('justify-content-end', 'justify-content-between');
-                // document.querySelector('.hr').style.display = 'block';
-                // eslint-disable-next-line react/prop-types
-                chatPanel.current.classList.replace('col-md-11','col-md-9');
-                setTimeout(() => {
-                    sideBarRef.current.classList.replace('col-md-1','col-md-3');
-                },200)
+                // chatPanel.current.classList.replace('col-md-11','col-md-9');
+                onChangeIsCollapsed(false)
+
             }else {
                 setLayoutState(prevState => ({
                     ...prevState,
                     isCollapsed:true,
                 }));
-                // document.querySelector(`.sideBarTitle`).style.display = 'none';
-                // document.querySelector(`.${styles.historyTheme}`).style.display = 'none';
-                // document.querySelector('.hr').style.display = 'none';
-                // document.querySelector(`.sidebarHeader`).classList.replace('justify-content-between', 'justify-content-end');
-                setTimeout(() => {
-                    chatPanel.current.classList.replace('col-md-9','col-md-11');
-                },200)
-                sideBarRef.current.classList.replace('col-md-3','col-md-1');
-                // sideBarRef.current.classList.add(`${styles.collapsed}`);
             }
         }else{
-            layoutState.isDesktop(false)
+            setLayoutState(prevState => ({
+                ...prevState,
+                isDesktop:false,
+            }));
             if (sideBarRef.current.classList.contains(`${styles.collapsedMd}`)) {
-                sideBarRef.current.classList.remove(`${styles.collapsedMd}`);
-                document.querySelector(`.${styles.historyTheme}`).style.display = 'block';
-                document.querySelector('.hr').style.display = 'block';
+                setLayoutState(prevState => ({
+                    ...prevState,
+                    isCollapsed:false,
+                }));
             }else{
-                document.querySelector(`.${styles.historyTheme}`).style.display = 'none';
-                document.querySelector('.hr').style.display = 'none';
-                sideBarRef.current.classList.add(`${styles.collapsedMd}`);
+                setLayoutState(prevState => ({
+                    ...prevState,
+                    isCollapsed:true,
+                }));
             }
         }
     };
-
     useEffect(()=>{
         if(themeMessages.length){
             if(clientWindowSize[0] >= 768){
@@ -209,34 +221,29 @@ function Sidebar({chatPanel}){
         }
 
     },[height,clientWindowSize,mainContentSize]);
-
     return (
         <aside
-            className={`${styles.sidebar} col-12 col-md-3 ${layoutState.isDesktop && layoutState.isCollapsed ? styles.collapsed : ''}`}
+            className={`${styles.sidebar} col-12 
+            ${(layoutState.isDesktop && layoutState.isCollapsed) ? styles.collapsed : (!layoutState.isDesktop && layoutState.isCollapsed ? styles.collapsedMd : '')}
+            `}
             ref={sideBarRef}>
             <TotalHeightText refComponent={sideBarRef} querySelector='li' onHeightChange={handleHeightChange}/>
-            <div className={`sidebarHeader ${layoutState.isDesktop && layoutState.isCollapsed ? 'justify-content-end' : 'justify-content-between'} 
-            align-items-center d-none d-lg-flex `}>
-                <h5 className={`sideBarTitle ${layoutState.isDesktop && layoutState.isCollapsed ? 'd-none' : 'd-block'}`}
-                >История тем общения</h5>
-                <Button className='clearButton'>
-                    <img src={history} alt='История' className='p-2' onClick={handleShowSidebar}/>
-                </Button>
-            </div>
-            <div
-                className="d-flex ps-3 sidebarHeaderMd pt-1 pe-3 pb-0 justify-content-between align-items-center d-lg-none">
-                <h6 className='mb-0'>История тем общения</h6>
+
+            <div className={` ${!layoutState.isDesktop ? 'pt-1 pe-3 pb-0 ps-3' : ''} d-flex ${layoutState.isDesktop && layoutState.isCollapsed ? 'justify-content-end' : 'justify-content-between'} 
+            align-items-center`}>
+                <h6 className={`sideBarTitle ${layoutState.isDesktop && layoutState.isCollapsed ? 'd-none' : 'd-block'} ${!layoutState.isDesktop ? 'mb-0' : ''}`}
+                >История тем общения</h6>
                 <Button className='clearButton'>
                     <img src={history} alt='История' className='p-2' onClick={handleShowSidebar}/>
                 </Button>
             </div>
 
-            <hr className={`mt-1 hr ${layoutState.isDesktop && layoutState.isCollapsed ? 'd-none' : ''}`}/>
+            <hr className={`mt-1 hr ${layoutState.isCollapsed ? 'd-none' : ''}`}/>
 
             <ul className=
                     {`
                         ${styles.historyTheme} ps-0 pe-0 pb-0 mb-0
-                        ${layoutState.isDesktop && layoutState.isCollapsed ? 'd-none' : ''}
+                        ${layoutState.isCollapsed ? 'd-none' : ''}
                     `}
                 ref={historyTheme}>
                 {themeMessages.length > 0 ? (
