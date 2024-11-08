@@ -5,6 +5,7 @@ import gitLogo from '../../assets/icons/gitLogo.png';
 import {useContext, useEffect} from "react";
 import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.jsx";
 import useElementHeight from "../../hooks/useElementHeight.js";
+import {Link} from "react-router-dom";
 function Header({isMainPage}){
     const [refNavbar,navbarHeight] = useElementHeight(null);
     const {setNavbarHeight} = useContext(ScreenSizeContext);
@@ -25,10 +26,10 @@ function Header({isMainPage}){
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto"></Nav>
                 <Nav className='text-center'>
-                    <Nav.Link href="#deets" className='ms-md-5'>Викторина</Nav.Link>
-                    <Nav.Link href="#deets" className='ms-md-5'>Инструменты</Nav.Link>
-                    <Nav.Link href="#deets" className='ms-md-5'>О проекте</Nav.Link>
-                    <Nav.Link className="ms-md-5">
+                    <Link to='/Chat'><Nav.Link href="#deets" className='ms-md-5'>Чат</Nav.Link></Link>
+                    <Link to='/notfound'><Nav.Link href="#deets" className='ms-md-5'>Инструменты</Nav.Link></Link>
+                    <Link to='/notfound'><Nav.Link href="#deets" className='ms-md-5'>О проекте</Nav.Link></Link>
+                    <Nav.Link className="ms-md-5" href='https://github.com/RockTINTIN21/ReactTutor'>
                         <img src={gitLogo} alt="gitLogo" style={{width:'2rem'}}/>
                     </Nav.Link>
                 </Nav>

@@ -16,7 +16,7 @@ function VantaBackground() {
             minHeight: 200.00,
             minWidth: 200.00,
             scale: 1.00,
-            scaleMobile: 1.00,
+            scaleMobile: 1,
             color: 0xe8e8,
             backgroundColor: 0x111111
         });
