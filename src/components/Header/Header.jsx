@@ -29,7 +29,7 @@ function Header({isMainPage}){
                     <Nav.Link href="#deets" className='ms-md-5'>Инструменты</Nav.Link>
                     <Nav.Link href="#deets" className='ms-md-5'>О проекте</Nav.Link>
                     <Nav.Link className="ms-md-5">
-                        <img src={gitLogo} alt="gitLogo"/>
+                        <img src={gitLogo} alt="gitLogo" style={{width:'2rem'}}/>
                     </Nav.Link>
                 </Nav>
             </Navbar.Collapse>
