@@ -5,14 +5,14 @@ import gitLogo from '../../assets/icons/gitLogo.png';
 import {useContext, useEffect} from "react";
 import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.jsx";
 import useElementHeight from "../../hooks/useElementHeight.js";
-function Header(){
+function Header({isMainPage}){
     const [refNavbar,navbarHeight] = useElementHeight(null);
     const {setNavbarHeight} = useContext(ScreenSizeContext);
     useEffect(()=>{
         setNavbarHeight(navbarHeight)
     },[navbarHeight])
     return(
-        <Navbar collapseOnSelect expand="lg" className='w-100' ref={refNavbar}>
+        <Navbar collapseOnSelect expand="lg" className={`container bg-transparent ${isMainPage && 'fixed-top'}`} ref={refNavbar}>
             <Navbar.Brand href="/">
                 <img
                     alt="ReactTutor"

@@ -61,7 +61,7 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
     // Хук изменения высоты блока чата с сообщениями.
     useLayoutEffect(() => {
         onChangeChatPanel(mainContentRef)
-        if(clientWindowSize[1] <= 767){
+        if(clientWindowSize[0] <= 767){
             mainContentRef.current.style.height = `${clientWindowSize[1] + 100}px`;
         }else{
             const mathMainHeight = ((clientWindowSize[1] - navbarHeight) * 0.99) - chatFormWrapperRef.current.getBoundingClientRect().height
@@ -252,7 +252,7 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
                         className="col-2 ps-md-4 me-0 ps-lg-2 ps-xxl-4 ps-0 m-0 col-md-1 d-flex"
                         ref={wrapperButtonSubmitRef}>
                         <Button className={`${styles.buttonSubmit} ${layoutState.isDisabledButton && 'disabled'}`} ref={submitButton}>
-                            <img src={send} alt='Отправить'/>
+                            <img src={send} alt='Отправить'  style={{width:'1.5rem'}}/>
                         </Button>
                     </div>
                 </Form.Group>

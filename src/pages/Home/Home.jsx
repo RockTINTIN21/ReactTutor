@@ -15,7 +15,7 @@ function Home(){
             <Helmet><title>ReactTutorAI</title></Helmet>
             <VantaBackground />
             <div className="content h-100">
-                <Header/>
+                <Header isMainPage={true}/>
                 <div className="main h-100 justify-content-center align-items-center d-flex flex-column">
                     <img src={largeLogo} width='100px' alt="Logo"/>
                     <h1>React.TutorAI</h1>

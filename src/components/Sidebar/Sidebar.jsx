@@ -234,7 +234,7 @@ function Sidebar({chatPanel,onChangeIsCollapsed}){
                 <h6 className={`sideBarTitle ${layoutState.isDesktop && layoutState.isCollapsed ? 'd-none' : 'd-block'} ${!layoutState.isDesktop ? 'mb-0' : ''}`}
                 >История тем общения</h6>
                 <Button className='clearButton'>
-                    <img src={history} alt='История' className='p-2' onClick={handleShowSidebar}/>
+                    <img src={history} alt='История' className='p-2' style={{width:'2.5rem'}} onClick={handleShowSidebar}/>
                 </Button>
             </div>
 
