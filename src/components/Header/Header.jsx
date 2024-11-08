@@ -12,7 +12,7 @@ function Header({isMainPage}){
         setNavbarHeight(navbarHeight)
     },[navbarHeight])
     return(
-        <Navbar collapseOnSelect expand="lg" className={`container bg-transparent ${isMainPage && 'fixed-top'}`} ref={refNavbar}>
+        <Navbar collapseOnSelect expand="lg" className={`container  ${isMainPage && 'fixed-top ps-3 pe-3'}`} ref={refNavbar}>
             <Navbar.Brand href="/">
                 <img
                     alt="ReactTutor"
