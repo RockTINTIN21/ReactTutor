@@ -21,7 +21,7 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
     const [mainContentRef, mainContentWidth] = useElementWidth(null)
     const {setMainContentSize, clientWindowSize,navbarHeight} = useContext(ScreenSizeContext);
     const [mainHeight,setMainHeight] = useState(0);
-    const [layoutState, setLayoutState] = useState({isChatScroll:false,isFormScroll:false,isDisabledButton:true,isDesktop:true})
+    const [layoutState, setLayoutState] = useState({isChatScroll:false,isFormScroll:false,isDisabledButton:true,isDesktop:true,isButtonDown:false})
 
     useEffect(() => {
         setMainContentSize(mainHeight);
@@ -82,6 +82,7 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
     useLayoutEffect(() => {
         if(formControlChatRef){
             formControlChatRef.current.style.width = `${mainContentRef.current.offsetWidth}px`;
+            formControlChatRef.current.style.width = clientWindowSize[0] >= 768 ? `${mainContentRef.current.offsetWidth}px` : ` ${mainContentRef.current.offsetWidth-10}px`;
         }
     }, [clientWindowSize,mainContentWidth]);
 
@@ -95,7 +96,8 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
         console.log('minHeight:',minHeight,'height:',height)
         setLayoutState(prevState=>({
             ...prevState,
-            isFormScroll:height > 192
+            isFormScroll:height > 192,
+            isButtonDown:height> minHeight
         }))
     };
     useEffect(()=>{
@@ -115,7 +117,7 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
 
     return (
 
-        <main className={`col-12 ps-2 pe-0 mt-3 mt-md-0 d-flex flex-column ${styles.wrapperChat}  ${(layoutState.isDesktop) ? sidebarIsCollapsed ? styles.wrapperChatCollapsed : styles.wrapperChatExpanded : 'col-12'}`}
+        <main className={`col-12 ps-0 pe-0 mt-3 mt-md-0 d-flex flex-column ${styles.wrapperChat}  ${(layoutState.isDesktop) ? sidebarIsCollapsed ? styles.wrapperChatCollapsed : styles.wrapperChatExpanded : 'col-12'}`}
               ref={mainContentRef}>
             <TotalHeightText refComponent={mainContentRef} querySelector='.message'
                              onHeightChange={handleHeightChange}/>
@@ -124,7 +126,7 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
                 <div className={styles.date}><span>20.10.2024</span></div>
                 <hr/>
             </div>
-            <div className={`h-100 mh-100 pb-5 mb-2  
+            <div className={`h-100 mh-100 pb-5 mb-md-0 mb-3  
             ${layoutState.isChatScroll && `${styles.chatScroll} pe-3`}
             `} ref={chatRef}>
                 <div
@@ -234,13 +236,13 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
             </div>
 
             <Form
-                className={`mt-auto pe-3 container-fluid pb-md-5 pb-3 position-fixed bottom-0 ${styles.chatFormWrapper}`}
+                className={`mt-auto container-fluid pb-md-5 pb-3 position-fixed bottom-0 ${styles.chatFormWrapper}`}
                 ref={chatFormWrapperRef}>
-                <Form.Group className={`row ${styles.chatInput}`} ref={chatInputElementRef} controlId="formChat">
-                    <div className="col-10 col-md-11 ps-0">
+                <Form.Group className={`row`} ref={chatInputElementRef} controlId="formChat">
+                    <div className="col-9 col-md-11 ps-0 pe-3">
                         <Form.Control
                             as='textarea'
-                            className={`${styles.formControlChat} ${layoutState.isFormScroll && `overflow-y-scroll align-items-end ${styles.formScroll}`}`}
+                            className={`${styles.formControlChat} ${layoutState.isFormScroll && `overflow-y-scroll ${styles.formScroll}`} pe-5`}
                             ref={formControlChatRef}
                             rows={1}
                             onInput={handleInput}
@@ -249,7 +251,7 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
                         />
                     </div>
                     <div
-                        className="col-2 ps-md-4 me-0 ps-lg-2 ps-xxl-4 ps-0 m-0 col-md-1 d-flex"
+                        className={`col-2 ps-md-4 me-0 ps-lg-2 ps-xxl-4 ms-3 ms-md-auto ps-0 col-md-1 d-flex ${layoutState.isButtonDown && 'align-items-end pb-3'}`}
                         ref={wrapperButtonSubmitRef}>
                         <Button className={`${styles.buttonSubmit} ${layoutState.isDisabledButton && 'disabled'}`} ref={submitButton}>
                             <img src={send} alt='Отправить'  style={{width:'1.5rem'}}/>
