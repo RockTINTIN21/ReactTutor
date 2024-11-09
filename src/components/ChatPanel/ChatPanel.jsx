@@ -1,6 +1,6 @@
 import {useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
-import useElementWidth from "../../hooks/useElementWidth.js";
-import useElementHeight from "../../hooks/useElementHeight.js";
+import useElementWidth from "../../hooks/useElementWidth.ts";
+import useElementHeight from "../../hooks/useElementHeight.ts";
 import largeLogo from "../../assets/icons/largeLogo.png";
 import userAvatar from "../../assets/icons/avatar.png";
 import {Button, Form} from "react-bootstrap";

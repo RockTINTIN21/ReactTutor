@@ -1,8 +1,9 @@
-import {useEffect, useRef, useState} from "react";
+import {RefObject, useEffect, useRef, useState} from "react";
 
-const useElementWidth = () => {
-    const ref = useRef(null);
-    const [width, setWidth] = useState(0);
+type useElementWidthHook = [RefObject<HTMLElement>,number]
+const useElementWidth = ():useElementWidthHook => {
+    const ref = useRef<HTMLElement>(null);
+    const [width, setWidth] = useState<number>(0);
     const updateWidth = () => {
         if(ref.current) {
             setWidth(ref.current.clientWidth);
@@ -11,7 +12,10 @@ const useElementWidth = () => {
     useEffect(() => {
         updateWidth();
         const resizeObserver = new ResizeObserver(updateWidth);
-        resizeObserver.observe(ref.current);
+        if(ref.current){
+            resizeObserver.observe(ref.current);
+        }
+
         return () => {
             if (ref.current) {
                 resizeObserver.unobserve(ref.current);

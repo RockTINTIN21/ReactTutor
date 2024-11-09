@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import {RefObject, useEffect, useRef, useState} from "react";
 
-const useElementHeight = () => {
-    const ref = useRef(null);
-    const [height, setHeight] = useState(0);
+type UseElementHeightHook = [RefObject<HTMLElement>,number];
+
+const useElementHeight = (): UseElementHeightHook => {
+    const ref = useRef<HTMLElement>(null);
+    const [height, setHeight] = useState<number>(0);
 
     const updateHeight = () => {
         if (ref.current) {
@@ -14,8 +16,9 @@ const useElementHeight = () => {
         updateHeight();
 
         const resizeObserver = new ResizeObserver(updateHeight);
-        resizeObserver.observe(ref.current);
-
+        if(ref.current){
+            resizeObserver.observe(ref.current);
+        }
         return () => {
             if (ref.current) {
                 resizeObserver.unobserve(ref.current);
