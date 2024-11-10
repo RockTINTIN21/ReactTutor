@@ -3,7 +3,7 @@ import './Chat.css';
 import {Row} from "react-bootstrap";
 import {useState} from "react";
 import {Helmet} from "react-helmet";
-import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import Sidebar from "../../components/Sidebar/Sidebar.tsx";
 import ChatPanel from "../../components/ChatPanel/ChatPanel.jsx";
 
 function Chat() {

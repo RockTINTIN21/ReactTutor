@@ -1,12 +1,17 @@
 import {Button} from "react-bootstrap";
 import history from "../../assets/icons/history.png";
-import {useContext, useEffect, useInsertionEffect, useRef, useState} from "react";
+import React, {RefObject, useContext, useEffect, useInsertionEffect, useRef, useState} from "react";
 import TotalHeightText from "../TotalHeightText/TotalHeightText.ts";
 import styles from "./Sidebar.module.css";
 import { v4 as uuidv4 } from 'uuid';
 import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.tsx";
 // eslint-disable-next-line react/prop-types
-const themeMessages = [
+type ThemeMessage = {
+    title: string;
+    themeId:string,
+    date:Date;
+};
+const themeMessages:ThemeMessage[] = [
     {
         title: 'Введение в программирование',
         themeId: uuidv4(),
@@ -103,22 +108,27 @@ const themeMessages = [
         date: new Date('2024-02-10T14:30:00'),
     },
 ];
-
-function Sidebar({chatPanel,onChangeIsCollapsed}){
-    const historyTheme = useRef(null);
-    const sideBarRef = useRef(null)
-    const [height,setHeight] = useState(0);
-    const [isActive,setIsActive] = useState({show:false,id:themeMessages[0].themeId});
+type SidebarType = {
+    onChangeIsCollapsed:(isCollapsed: boolean) => void,
+}
+function Sidebar({onChangeIsCollapsed}:SidebarType){
+    const historyTheme = useRef<HTMLUListElement>(null!);
+    const sideBarRef = useRef<HTMLElement>(null!)
+    const [height,setHeight] = useState<number>(0);
+    const [isActive,setIsActive] = useState<{show:boolean,id:any}>({
+        show:false,
+        id:themeMessages[0].themeId
+    });
 
     const [layoutState,setLayoutState] = useState({
         isCollapsed:false,
         isDesktop:false
     })
 
-    const handleHeightChange = (newHeight) => {
+    const handleHeightChange = (newHeight: number) => {
         setHeight(newHeight);
     }
-    const {mainContentSize, clientWindowSize} = useContext(ScreenSizeContext);
+    const {mainContentSize, clientWindowSize} = useContext(ScreenSizeContext)!;
     useEffect(() => {
         if(clientWindowSize[0] >= 768){
             setLayoutState(prevState => ({
@@ -132,20 +142,15 @@ function Sidebar({chatPanel,onChangeIsCollapsed}){
             }))
         }
     },[clientWindowSize])
-    const handleClickTheme = (e) =>{
-        const newId = e.currentTarget.dataset.id
-        if(isActive.element !== newId){
-            setIsActive({
-                id: e.currentTarget.dataset.id,
-                show:true
-            });
-        }
+    const handleClickTheme = (e:React.MouseEvent<HTMLElement>) =>{
+        setIsActive({
+            id: e.currentTarget.dataset.id,
+            show:true
+        });
     }
-
-
     useEffect(()=>{
         if(layoutState.isDesktop && layoutState.isCollapsed){
-            const handleTransitionEnd = (e) => {
+            const handleTransitionEnd = (e: TransitionEvent) => {
                 if(e.propertyName === 'width'){
                     onChangeIsCollapsed(true)
                 }
@@ -159,10 +164,13 @@ function Sidebar({chatPanel,onChangeIsCollapsed}){
     },[layoutState])
 
     //Функция скрытия сайдбара
-    const handleShowSidebar = (e) => {
+    const handleShowSidebar = (e:React.MouseEvent<HTMLElement>) => {
         e.currentTarget.blur();
         setTimeout(() => {
-            document.activeElement.blur();
+            if(document.activeElement instanceof HTMLElement){
+                document.activeElement?.blur();
+            }
+
         }, 0);
         if(clientWindowSize[0] >= 768){
             setLayoutState(prevState => ({
