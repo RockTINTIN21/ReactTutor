@@ -9,6 +9,7 @@ const useElementWidth = ():useElementWidthHook => {
             setWidth(ref.current.clientWidth);
         }
     };
+
     useEffect(() => {
         updateWidth();
         const resizeObserver = new ResizeObserver(updateWidth);

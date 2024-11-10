@@ -3,7 +3,7 @@ import './Header.css';
 import Logo from '../../assets/icons/Logo.png';
 import gitLogo from '../../assets/icons/gitLogo.png';
 import {useContext, useEffect} from "react";
-import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.jsx";
+import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.tsx";
 import useElementHeight from "../../hooks/useElementHeight.ts";
 import {Link} from "react-router-dom";
 function Header({isMainPage}){

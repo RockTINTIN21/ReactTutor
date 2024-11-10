@@ -5,7 +5,7 @@ import largeLogo from "../../assets/icons/largeLogo.png";
 import userAvatar from "../../assets/icons/avatar.png";
 import {Button, Form} from "react-bootstrap";
 import send from "../../assets/icons/send.png";
-import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.jsx";
+import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.tsx";
 import TotalHeightText from "../TotalHeightText/TotalHeightText.js";
 import styles from './ChatPanel.module.css'
 import classNames from 'classnames'

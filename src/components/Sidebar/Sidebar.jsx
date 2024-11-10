@@ -4,7 +4,7 @@ import {useContext, useEffect, useInsertionEffect, useRef, useState} from "react
 import TotalHeightText from "../TotalHeightText/TotalHeightText.js";
 import styles from "./Sidebar.module.css";
 import { v4 as uuidv4 } from 'uuid';
-import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.jsx";
+import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.tsx";
 // eslint-disable-next-line react/prop-types
 const themeMessages = [
     {

@@ -3,7 +3,7 @@ import Home from "./pages/Home/Home.jsx";
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import {Container} from "react-bootstrap";
 import Chat from "./pages/Chat/Chat.jsx";
-import {ScreenSizeProvider} from "./contexts/ScreenSizeContext.jsx";
+import {ScreenSizeProvider} from "./contexts/ScreenSizeContext.tsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
 function App() {
 
