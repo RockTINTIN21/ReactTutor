@@ -1,8 +1,12 @@
-import {useEffect} from "react";
-
-function TotalHeightText({refComponent,onHeightChange,querySelector}) {
+import {RefObject, useEffect} from "react";
+type TotalHeightTextType = {
+    refComponent: RefObject<HTMLElement>,
+    onHeightChange:(height: number) => void,
+    querySelector: string
+}
+function TotalHeightText({refComponent,onHeightChange,querySelector}:TotalHeightTextType) {
         useEffect(() => {
-            if(refComponent && querySelector){
+            if(refComponent.current && querySelector){
                 const totalHeightObserver = refComponent.current.querySelectorAll(querySelector);
                 const resizeObserverComponent = new ResizeObserver((entries) =>{
                     let totalHeight = 0;
