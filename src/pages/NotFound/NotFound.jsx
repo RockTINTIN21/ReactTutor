@@ -1,4 +1,4 @@
-import Header from "../../components/Header/Header.jsx";
+import Header from "../../components/Header/Header.tsx";
 
 import {Helmet} from "react-helmet";
 import {Link} from "react-router-dom";

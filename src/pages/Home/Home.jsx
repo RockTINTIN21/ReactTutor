@@ -1,4 +1,4 @@
-import Header from "../../components/Header/Header.jsx";
+import Header from "../../components/Header/Header.tsx";
 import VantaBackground from "../../components/VantaBackground/VantaBackground.jsx";
 import styles from "./Home.module.css";
 import largeLogo from '../../assets/icons/largeLogo.png';

@@ -3,14 +3,21 @@ import './Header.css';
 import Logo from '../../assets/icons/Logo.png';
 import gitLogo from '../../assets/icons/gitLogo.png';
 import {useContext, useEffect} from "react";
-import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.tsx";
+import {ScreenSizeContext} from '../../contexts/ScreenSizeContext.tsx';
 import useElementHeight from "../../hooks/useElementHeight.ts";
 import {Link} from "react-router-dom";
-function Header({isMainPage}){
-    const [refNavbar,navbarHeight] = useElementHeight(null);
-    const {setNavbarHeight} = useContext(ScreenSizeContext);
+import React from "react";
+
+type HeaderType = {
+    isMainPage: boolean,
+}
+
+function Header({isMainPage}:HeaderType) {
+    const [refNavbar,navbarHeight] = useElementHeight();
+    const {setNavbarHeight} = useContext(ScreenSizeContext)!;
     useEffect(()=>{
         setNavbarHeight(navbarHeight)
+
     },[navbarHeight])
     return(
         <Navbar collapseOnSelect expand="lg" className={`container  ${isMainPage && 'fixed-top ps-3 pe-3'}`} ref={refNavbar}>
