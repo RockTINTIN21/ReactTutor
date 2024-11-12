@@ -12,14 +12,20 @@ const useElementWidth = (): useElementWidthHook => {
     };
 
     useEffect(() => {
-        updateWidth();
-        const resizeObserver = new ResizeObserver(updateWidth);
+        if(ref.current){
+            updateWidth();
+            const resizeObserver = new ResizeObserver(updateWidth);
 
-        resizeObserver.observe(ref.current!);
+            resizeObserver.observe(ref.current!);
 
-        return () => {
-            resizeObserver.unobserve(ref.current!);
-        };
+            return () => {
+                if(ref.current){
+                    resizeObserver.unobserve(ref.current!);
+                }
+
+            };
+        }
+
     }, []);
 
     return [ref, width];
