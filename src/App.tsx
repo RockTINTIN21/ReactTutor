@@ -1,10 +1,11 @@
 
-import Home from "./pages/Home/Home.jsx";
+import Home from "./pages/Home/Home.tsx";
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import {Container} from "react-bootstrap";
-import Chat from "./pages/Chat/Chat.jsx";
+import Chat from "./pages/Chat/Chat.tsx";
 import {ScreenSizeProvider} from "./contexts/ScreenSizeContext.tsx";
-import NotFound from "./pages/NotFound/NotFound.jsx";
+import NotFound from "./pages/NotFound/NotFound.tsx";
+import React from "react";
 function App() {
 
     return (

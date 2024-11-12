@@ -1,13 +1,14 @@
 import Header from "../../components/Header/Header.tsx";
-import VantaBackground from "../../components/VantaBackground/VantaBackground.jsx";
+// @ts-ignore
+import VantaBackground from "../../components/VantaBackground/VantaBackground.tsx";
 import styles from "./Home.module.css";
 import largeLogo from '../../assets/icons/largeLogo.png';
 import './Home.css';
-import html from '../../assets/icons/html.jpg';
-import {Button, Card, CardGroup, Carousel, Col, Row} from "react-bootstrap";
-import {useState} from "react";
+import {Button} from "react-bootstrap";
+// @ts-ignore
 import {Helmet} from "react-helmet";
 import {Link} from "react-router-dom";
+import React from "react";
 
 function Home(){
     return(

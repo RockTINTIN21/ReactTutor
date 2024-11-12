@@ -1,4 +1,4 @@
-import {useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
 import useElementWidth from "../../hooks/useElementWidth.ts";
 import useElementHeight from "../../hooks/useElementHeight.ts";
 import largeLogo from "../../assets/icons/largeLogo.png";
@@ -8,25 +8,47 @@ import send from "../../assets/icons/send.png";
 import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.tsx";
 import TotalHeightText from "../TotalHeightText/TotalHeightText.ts";
 import styles from './ChatPanel.module.css'
-import classNames from 'classnames'
-function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
-    const [chatRef,clientChatMaxHeight] = useElementHeight(null)
-    const submitButton = useRef(null);
-    const [chatInputElementRef,chatInputElementWidth] = useElementWidth();
-    const [formValue, setFormValue] = useState(0);
-    const [clientChatTotalHeight,setClientChatTotalHeight] = useState(null)
-    const [formControlChatRef, formControlChatWidth] = useElementWidth(null)
-    const wrapperButtonSubmitRef = useRef(null);
-    const chatFormWrapperRef = useRef(null);
-    const [mainContentRef, mainContentWidth] = useElementWidth(null)
-    const {setMainContentSize, clientWindowSize,navbarHeight} = useContext(ScreenSizeContext);
+type ChatPanelType = {
+    sidebarIsCollapsed:boolean;
+}
+function ChatPanel({sidebarIsCollapsed}: ChatPanelType) {
+    const [chatRef,clientChatMaxHeight] = useElementHeight()
+    const submitButton = useRef<HTMLButtonElement>(null!);
+    const chatInputElementRef = useRef(null!)
+    const [formValue, setFormValue] = useState<string>(null!);
+    const [clientChatTotalHeight,setClientChatTotalHeight] = useState(0)
+    const formControlChatRef = useRef<HTMLTextAreaElement>(null!)
+    const wrapperButtonSubmitRef = useRef<HTMLDivElement>(null!);
+    const chatFormWrapperRef = useRef<HTMLFormElement>(null!);
+    const [mainContentRef, mainContentWidth] = useElementWidth()
+    const screenSizeContext = useContext(ScreenSizeContext);
+
+    if (!screenSizeContext) {
+        throw new Error("ScreenSizeContext must be used within a ScreenSizeProvider");
+    }
+
+    const { setMainContentSize, clientWindowSize, navbarHeight } = screenSizeContext;
+
     const [mainHeight,setMainHeight] = useState(0);
-    const [layoutState, setLayoutState] = useState({isChatScroll:false,isFormScroll:false,isDisabledButton:true,isDesktop:true,isButtonDown:false})
+    type layoutStateType = {
+        isChatScroll:boolean,
+        isFormScroll:boolean,
+        isDisabledButton:boolean,
+        isDesktop:boolean,
+        isButtonDown:boolean
+    }
+    const [layoutState, setLayoutState] = useState<layoutStateType>({
+        isChatScroll:false,
+        isFormScroll:false,
+        isDisabledButton:true,
+        isDesktop:true,
+        isButtonDown:false
+    })
 
     useEffect(() => {
-        setMainContentSize(mainHeight);
+        setMainContentSize([mainHeight,0]);
     },[mainHeight])
-    const handleHeightChange = (newHeight)=>{
+    const handleHeightChange = (newHeight:number)=>{
         setClientChatTotalHeight(newHeight);
     }
     useEffect(() => {
@@ -51,29 +73,29 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
     }, [clientChatMaxHeight,clientChatTotalHeight,formValue]);
 
     // Функция блокировки кнопки отправки.
-    const handleChangeTextarea = (e) =>{
+    const handleChangeTextarea = (e:React.ChangeEvent<HTMLTextAreaElement>) =>{
         setLayoutState((prevState)=>({
             ...prevState,
-            isDisabledButton:e.target.value.length < 1,
+            isDisabledButton:e.currentTarget.value.length < 1,
         }));
     }
 
     // Хук изменения высоты блока чата с сообщениями.
     useLayoutEffect(() => {
-        onChangeChatPanel(mainContentRef)
+        // onChangeChatPanel(mainContentRef)
         if(clientWindowSize[0] <= 767){
-            mainContentRef.current.style.height = `${clientWindowSize[1] + 100}px`;
+            mainContentRef.current!.style.height = `${clientWindowSize[1] + 100}px`;
         }else{
             const mathMainHeight = ((clientWindowSize[1] - navbarHeight) * 0.99) - chatFormWrapperRef.current.getBoundingClientRect().height
             setMainHeight(mathMainHeight)
-            mainContentRef.current.style.height = mathMainHeight + 'px';
+            mainContentRef.current!.style.height = mathMainHeight + 'px';
         }
 
     },[navbarHeight,clientWindowSize])
 
     // Хук изменения длины окна чата с сообщениями.
     useEffect(() => {
-        const mainContentWidth = mainContentRef.current.getBoundingClientRect().width;
+        const mainContentWidth = mainContentRef.current!.getBoundingClientRect().width;
         chatFormWrapperRef.current.style.width = `${mainContentWidth}px`;
     }, [clientWindowSize, mainContentWidth]);
 
@@ -81,14 +103,14 @@ function ChatPanel({onChangeChatPanel, sidebarIsCollapsed}) {
     // Функция измения длины поля ввода.
     useLayoutEffect(() => {
         if(formControlChatRef){
-            formControlChatRef.current.style.width = `${mainContentRef.current.offsetWidth}px`;
-            formControlChatRef.current.style.width = clientWindowSize[0] >= 768 ? `${mainContentRef.current.offsetWidth}px` : ` ${mainContentRef.current.offsetWidth-10}px`;
+            formControlChatRef.current.style.width = `${mainContentRef.current!.offsetWidth}px`;
+            formControlChatRef.current.style.width = clientWindowSize[0] >= 768 ? `${mainContentRef.current!.offsetWidth}px` : ` ${mainContentRef.current!.offsetWidth-10}px`;
         }
     }, [clientWindowSize,mainContentWidth]);
 
     // Функция измения высоты поля ввода и включения скролла в поле ввода.
-    const handleInput = (e) => {
-        setFormValue(e.target.value);
+    const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+        setFormValue(e.currentTarget.value);
         const computedStyles = window.getComputedStyle(formControlChatRef.current);
         const minHeight = parseFloat(computedStyles.minHeight);
         const height = parseFloat(computedStyles.height);

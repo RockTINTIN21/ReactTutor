@@ -1,7 +1,9 @@
 
+// @ts-ignore
 import NET from "vanta/dist/vanta.net.min"; // Импорт эффекта NET
 
 import {useEffect, useRef} from "react"; // Стиль для компонента
+import React from "react";
 
 function VantaBackground() {
     const vantaRef = useRef(null); // Ссылка на DOM-элемент

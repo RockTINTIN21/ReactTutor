@@ -1,5 +1,7 @@
+import React from "react";
 import Header from "../../components/Header/Header.tsx";
 
+// @ts-ignore
 import {Helmet} from "react-helmet";
 import {Link} from "react-router-dom";
 

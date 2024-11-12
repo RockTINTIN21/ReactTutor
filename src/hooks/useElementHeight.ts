@@ -1,9 +1,9 @@
 import {RefObject, useEffect, useRef, useState} from "react";
 
-type UseElementHeightHook = [RefObject<HTMLElement>,number];
+type UseElementHeightHook = [RefObject<HTMLDivElement>,number];
 
 const useElementHeight = (): UseElementHeightHook => {
-    const ref = useRef<HTMLElement | null>(null);
+    const ref = useRef<HTMLDivElement | null>(null);
     const [height, setHeight] = useState<number>(0);
 
     const updateHeight = () => {
