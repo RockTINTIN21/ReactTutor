@@ -1,6 +1,6 @@
 # ReactTutor
 
-[ReactTutor на GitHub](https://github.com/RockTINTIN21/ReactTutor/)
+[ReactTutor на GitHub](https://github.com/RockTINTIN21/ReactTutor/)<br>
 [ReactTutor в Figma](https://www.figma.com/design/MedZCwN6JU3NIdgq7aMXoC/Untitled?node-id=0-1&t=P6VLqePG7BqngygV-1)
 ## Описание
 
