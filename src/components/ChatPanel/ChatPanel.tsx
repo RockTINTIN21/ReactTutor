@@ -15,7 +15,7 @@ function ChatPanel({sidebarIsCollapsed}: ChatPanelType) {
     const [chatRef,clientChatMaxHeight] = useElementHeight()
     const submitButton = useRef<HTMLButtonElement>(null!);
     const chatInputElementRef = useRef(null!)
-    const [formValue, setFormValue] = useState<string>(null!);
+    const [formValue, setFormValue] = useState<string>("");
     const [clientChatTotalHeight,setClientChatTotalHeight] = useState(0)
     const formControlChatRef = useRef<HTMLTextAreaElement>(null!)
     const wrapperButtonSubmitRef = useRef<HTMLDivElement>(null!);
@@ -24,7 +24,8 @@ function ChatPanel({sidebarIsCollapsed}: ChatPanelType) {
     const screenSizeContext = useContext(ScreenSizeContext);
 
     if (!screenSizeContext) {
-        throw new Error("ScreenSizeContext must be used within a ScreenSizeProvider");
+        throw new Error("ScreenSizeContext must be used within " +
+            "a ScreenSizeProvider");
     }
 
     const { setMainContentSize, clientWindowSize, navbarHeight } = screenSizeContext;

@@ -32,12 +32,12 @@ function Header({isMainPage}:HeaderType) {
             <Navbar.Toggle className='custom-toggler' aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto"></Nav>
-                <Nav className='text-center'>
-                    <Link to='/Chat'><Nav.Link href="#deets" className='ms-md-5'>Чат</Nav.Link></Link>
-                    <Link to='/notfound'><Nav.Link href="#deets" className='ms-md-5'>Инструменты</Nav.Link></Link>
-                    <Link to='/notfound'><Nav.Link href="#deets" className='ms-md-5'>О проекте</Nav.Link></Link>
-                    <Nav.Link className="ms-md-5" href='https://github.com/RockTINTIN21/ReactTutor'>
-                        <img src={gitLogo} alt="gitLogo" style={{width:'2rem'}}/>
+                <Nav className="text-center">
+                    <Nav.Link as={Link} to="/Chat" className="ms-md-5">Чат</Nav.Link>
+                    <Nav.Link as={Link} to="/notfound" className="ms-md-5">Инструменты</Nav.Link>
+                    <Nav.Link as={Link} to="/notfound" className="ms-md-5">О проекте</Nav.Link>
+                    <Nav.Link className="ms-md-5" href="https://github.com/RockTINTIN21/ReactTutor">
+                        <img src={gitLogo} alt="gitLogo" style={{ width: '2rem' }} />
                     </Nav.Link>
                 </Nav>
             </Navbar.Collapse>

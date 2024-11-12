@@ -57,13 +57,13 @@
     .active{
         background-color: #2D2D2D;
     }
-    .historyTheme{
-        max-height: 100%; /* Установите ограничение по высоте */
-    }
+    /*.historyTheme{*/
+    /*    max-height: 100%; !* Установите ограничение по высоте *!*/
+    /*}*/
 
     .sidebar {
         width: 25%;
-        height: 100%;
+        /*height: 100%;*/
         transition: width 0.3s ease;
         overflow: hidden;
 

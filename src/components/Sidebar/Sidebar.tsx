@@ -5,6 +5,8 @@ import TotalHeightText from "../TotalHeightText/TotalHeightText.ts";
 import styles from "./Sidebar.module.css";
 import { v4 as uuidv4 } from 'uuid';
 import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.tsx";
+import {Link} from "react-router-dom";
+import notFound from "../../pages/NotFound/NotFound.tsx";
 // eslint-disable-next-line react/prop-types
 type ThemeMessage = {
     title: string;
@@ -113,7 +115,7 @@ type SidebarType = {
 }
 function Sidebar({onChangeIsCollapsed}:SidebarType){
     const historyTheme = useRef<HTMLUListElement>(null!);
-    const sideBarRef = useRef<HTMLElement>(null!)
+    const sideBarRef = useRef<HTMLDivElement>(null!)
     const [height,setHeight] = useState<number>(0);
     const [isActive,setIsActive] = useState<{show:boolean,id:any}>({
         show:false,
@@ -212,8 +214,8 @@ function Sidebar({onChangeIsCollapsed}:SidebarType){
     useEffect(()=>{
         if(themeMessages.length){
             if(clientWindowSize[0] >= 768){
-                // console.log('mainContentRef:',chatPanel)
-                sideBarRef.current.style.height = mainContentSize + 'px'
+                sideBarRef.current.style.height = mainContentSize[0] + 'px'
+                // sideBarRef.current.style.backgroundColor = 'green'
                 if(height >= historyTheme.current.clientHeight * 0.80){
                     historyTheme.current.style.overflowY = `scroll`;
                 }else{
@@ -230,11 +232,9 @@ function Sidebar({onChangeIsCollapsed}:SidebarType){
 
     },[height,clientWindowSize,mainContentSize]);
     return (
-        <aside
-            className={`${styles.sidebar} col-12 
-            ${(layoutState.isDesktop && layoutState.isCollapsed) ? styles.collapsed : (!layoutState.isDesktop && layoutState.isCollapsed ? styles.collapsedMd : '')}
-            `}
-            ref={sideBarRef}>
+        <aside className={`${styles.sidebar} col-12 
+            ${(layoutState.isDesktop && layoutState.isCollapsed) ? styles.collapsed : (!layoutState.isDesktop && layoutState.isCollapsed ? styles.collapsedMd : '')} `}
+               ref={sideBarRef}>
             <TotalHeightText refComponent={sideBarRef} querySelector='li' onHeightChange={handleHeightChange}/>
 
             <div className={` ${!layoutState.isDesktop ? 'pt-1 pe-3 pb-0 ps-3' : ''} d-flex ${layoutState.isDesktop && layoutState.isCollapsed ? 'justify-content-end' : 'justify-content-between'} 
@@ -262,7 +262,7 @@ function Sidebar({onChangeIsCollapsed}:SidebarType){
                             isActive.id === themeMessage.themeId ? styles.active : ''
                                 }
                         >
-                            <a href="#">
+                            <Link to='#'>
                                 <div className="justify-content-between d-flex align-items-center">
                                     <div className="col-7">{themeMessage.title}</div>
                                     <div className="col-5 d-flex align-items-center themeContent">
@@ -285,7 +285,7 @@ function Sidebar({onChangeIsCollapsed}:SidebarType){
                                         )}
                                     </div>
                                 </div>
-                            </a>
+                            </Link>
                         </li>
                     ))
                 ) : (
