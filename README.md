@@ -1,7 +1,7 @@
 # ReactTutor
 
-[ReactTutor на GitHub](https://github.com/RockTINTIN21/ReactTutor/)
-
+[ReactTutor на GitHub](https://github.com/RockTINTIN21/ReactTutor/)<br>
+[ReactTutor в Figma](https://www.figma.com/design/MedZCwN6JU3NIdgq7aMXoC/Untitled?node-id=0-1&t=P6VLqePG7BqngygV-1)
 ## Описание
 
 ReactTutor — это обучающая платформа для веб-разработки, где пользователи смогут изучать HTML, CSS, JavaScript и React с помощью интерактивного чата. В роли преподавателя выступает ChatGPT, который не только отвечает на вопросы, но и запоминает все, что обсуждалось с пользователем. 
