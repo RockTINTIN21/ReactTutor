@@ -1,36 +1,62 @@
-import React, {useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {Ref, RefObject, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
 import useElementWidth from "../../hooks/useElementWidth.ts";
 import useElementHeight from "../../hooks/useElementHeight.ts";
 import largeLogo from "../../assets/icons/largeLogo.png";
 import userAvatar from "../../assets/icons/avatar.png";
-import {Button, Form} from "react-bootstrap";
 import send from "../../assets/icons/send.png";
 import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.tsx";
 import TotalHeightText from "../TotalHeightText/TotalHeightText.ts";
 import styles from './ChatPanel.module.css'
+import ChatForm from "../ChatForm/ChatForm.tsx";
 type ChatPanelType = {
     sidebarIsCollapsed:boolean;
 }
+const info = {
+    userName:'Александр',
+    userAvatar:userAvatar,
+    reactTutorAvatar:largeLogo
+}
+type historyOfMessagesType = {
+    text:string,
+    date: Date
+    isReactTutor: boolean,
+}[]
+const historyOfMessages:historyOfMessagesType = [
+    {
+        text: 'Привет! Я ReactTutor, твой помощник в изучении фронтенда.',
+        date: new Date(),
+        isReactTutor:true,
+    },
+    {
+        text: 'Привет!',
+        date: new Date(),
+        isReactTutor:false,
+    },
+    {
+        text: 'Теперь вы можете добавлять новые объекты в historyOfMessages, и TypeScript будет проверять тип каждого объекта в массиве.',
+        date: new Date(),
+        isReactTutor:true,
+    },
+    {
+        text: ' message.date.toLocaleDateString(\'en-CA\', {\n' +
+            '                                    hour: \'2-digit\',\n' +
+            '                                    minute: \'2-digit\',\n' +
+            '                                    hour12: false\n' +
+            '                                }).replace(\'-\', \':\')\n' +
+            'как выводить только часы и минуты',
+        date: new Date(),
+        isReactTutor:false,
+    },
+]
 function ChatPanel({sidebarIsCollapsed}: ChatPanelType) {
     const [chatRef,clientChatMaxHeight] = useElementHeight()
-    const submitButton = useRef<HTMLButtonElement>(null!);
-    const chatInputElementRef = useRef(null!)
-    const [formValue, setFormValue] = useState<string>("");
     const [clientChatTotalHeight,setClientChatTotalHeight] = useState(0)
-    const formControlChatRef = useRef<HTMLTextAreaElement>(null!)
-    const wrapperButtonSubmitRef = useRef<HTMLDivElement>(null!);
-    const chatFormWrapperRef = useRef<HTMLFormElement>(null!);
     const [mainContentRef, mainContentWidth] = useElementWidth()
-    const screenSizeContext = useContext(ScreenSizeContext);
-
-    if (!screenSizeContext) {
-        throw new Error("ScreenSizeContext must be used within " +
-            "a ScreenSizeProvider");
-    }
-
-    const { setMainContentSize, clientWindowSize, navbarHeight } = screenSizeContext;
-
-    const [mainHeight,setMainHeight] = useState(0);
+    const [historyChatLength,setHistoryChatLength] = useState<number>(0);
+    const { setMainContentSize, clientWindowSize, navbarHeight } = useContext(ScreenSizeContext);
+    const [mainHeight,setMainHeight] = useState<number>(0);
+    const chatFormWrapperRef = useRef<HTMLDivElement | null>(null);
+    const [isShowStartMessage, setIsShowStartMessage] = useState<boolean>(true);
     type layoutStateType = {
         isChatScroll:boolean,
         isFormScroll:boolean,
@@ -47,8 +73,19 @@ function ChatPanel({sidebarIsCollapsed}: ChatPanelType) {
     })
 
     useEffect(() => {
+        setHistoryChatLength(historyOfMessages.length);
+    }, []);
+
+    useEffect(() => {
         setMainContentSize([mainHeight,0]);
     },[mainHeight])
+
+
+
+    const handleSetRef = (ref: HTMLDivElement | null) => {
+        chatFormWrapperRef.current = ref;
+    };
+
     const handleHeightChange = (newHeight:number)=>{
         setClientChatTotalHeight(newHeight);
     }
@@ -71,217 +108,124 @@ function ChatPanel({sidebarIsCollapsed}: ChatPanelType) {
             ...prevState,
             isChatScroll:clientChatTotalHeight > clientChatMaxHeight,
         }));
-    }, [clientChatMaxHeight,clientChatTotalHeight,formValue]);
+    }, [clientChatMaxHeight,clientChatTotalHeight]);
 
-    // Функция блокировки кнопки отправки.
-    const handleChangeTextarea = (e:React.ChangeEvent<HTMLTextAreaElement>) =>{
-        setLayoutState((prevState)=>({
-            ...prevState,
-            isDisabledButton:e.currentTarget.value.length < 1,
-        }));
-    }
+
 
     // Хук изменения высоты блока чата с сообщениями.
     useLayoutEffect(() => {
-        // onChangeChatPanel(mainContentRef)
-        if(clientWindowSize[0] <= 767){
-            mainContentRef.current!.style.height = `${clientWindowSize[1] + 100}px`;
+        if(mainContentRef.current && chatFormWrapperRef.current){
+            if(clientWindowSize[0] <= 767){
+                mainContentRef.current!.style.height = `${clientWindowSize[1] + 100}px`;
+            }else{
+                const mathMainHeight = ((clientWindowSize[1] - navbarHeight) * 0.99) - chatFormWrapperRef.current.getBoundingClientRect().height
+                setMainHeight(mathMainHeight)
+                mainContentRef.current!.style.height = mathMainHeight + 'px';
+            }
         }else{
-            const mathMainHeight = ((clientWindowSize[1] - navbarHeight) * 0.99) - chatFormWrapperRef.current.getBoundingClientRect().height
-            setMainHeight(mathMainHeight)
-            mainContentRef.current!.style.height = mathMainHeight + 'px';
+            if(clientWindowSize[0] <= 767){
+                mainContentRef.current!.style.height = `${clientWindowSize[1] + 100}px`;
+            }else{
+                const mathMainHeight = ((clientWindowSize[1] - navbarHeight) * 0.99) - 80
+                setMainHeight(mathMainHeight)
+            }
+
         }
+        // onChangeChatPanel(mainContentRef)
+
 
     },[navbarHeight,clientWindowSize])
 
     // Хук изменения длины окна чата с сообщениями.
     useEffect(() => {
-        const mainContentWidth = mainContentRef.current!.getBoundingClientRect().width;
-        chatFormWrapperRef.current.style.width = `${mainContentWidth}px`;
+        if(mainContentRef.current && chatFormWrapperRef.current){
+            const mainContentWidth = mainContentRef.current!.getBoundingClientRect().width;
+            chatFormWrapperRef.current.style.width = `${mainContentWidth}px`;
+        }
+
     }, [clientWindowSize, mainContentWidth]);
-
-
-    // Функция измения длины поля ввода.
-    useLayoutEffect(() => {
-        if(formControlChatRef){
-            formControlChatRef.current.style.width = `${mainContentRef.current!.offsetWidth}px`;
-            formControlChatRef.current.style.width = clientWindowSize[0] >= 768 ? `${mainContentRef.current!.offsetWidth}px` : ` ${mainContentRef.current!.offsetWidth-10}px`;
-        }
-    }, [clientWindowSize,mainContentWidth]);
-
-    // Функция измения высоты поля ввода и включения скролла в поле ввода.
-    const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
-        setFormValue(e.currentTarget.value);
-        const computedStyles = window.getComputedStyle(formControlChatRef.current);
-        const minHeight = parseFloat(computedStyles.minHeight);
-        const height = parseFloat(computedStyles.height);
-        formControlChatRef.current.style.height = `${formControlChatRef.current.scrollHeight}px`;
-        console.log('minHeight:',minHeight,'height:',height)
-        setLayoutState(prevState=>({
-            ...prevState,
-            isFormScroll:height > 192,
-            isButtonDown:height> minHeight
-        }))
-    };
-    useEffect(()=>{
-        console.log(layoutState.isFormScroll);
-
-    },[layoutState.isFormScroll]);
-    // Хук сброса высоты по умолчанию.
-    useLayoutEffect(() => {
-        if(!formValue.length){
-            setLayoutState(prevState=>({
-                ...prevState,
-                isFormScroll:false
-            }))
-            formControlChatRef.current.style.height = '3rem';
-        }
-    },[formValue,formControlChatRef,wrapperButtonSubmitRef])
 
     return (
 
         <main className={`col-12 ps-0 pe-0 mt-3 mt-md-0 d-flex flex-column ${styles.wrapperChat}  ${(layoutState.isDesktop) ? sidebarIsCollapsed ? styles.wrapperChatCollapsed : styles.wrapperChatExpanded : 'col-12'}`}
               ref={mainContentRef}>
-            <TotalHeightText refComponent={mainContentRef} querySelector='.message'
-                             onHeightChange={handleHeightChange}/>
-            <div className={`${styles.chatHeader} text-md-start text-center`}>
+            <TotalHeightText refComponent={mainContentRef} querySelector='.message' onHeightChange={handleHeightChange}/>
+            <div className={`${styles.chatHeader} text-md-start text-center pt-2`}>
                 <h4>Чат с ReactTutor</h4>
-                <div className={styles.date}><span>20.10.2024</span></div>
-                <hr/>
+                {/*<div className={styles.date}><span>20.10.2024</span></div>*/}
+                {/*<hr/>*/}
             </div>
             <div className={`h-100 mh-100 pb-5 mb-md-0 mb-3  
             ${layoutState.isChatScroll && `${styles.chatScroll} pe-3`}
             `} ref={chatRef}>
-                <div
-                    className={`d-flex flex-column w-100 align-items-start message messageReactTutor`}>
-                    <div className={`${styles.headerMessage} ${styles.headerMessageReactTutor}`}>
-                        <img src={largeLogo} width='35px' alt="largeLogo"/>
-                        <span className='ps-2'>ReactTutor</span>
-                    </div>
-                    <div className={`${styles.contentMessage} ${styles.contentMessageReactTutor} mt-3`}>
-                        <p className='m-0'>Привет! Я ReactTutor, твой помощник в изучении фронтенда.</p>
-                    </div>
-                    <div className={`${styles.footerMessage} mt-1`}>
-                        <span>20:27</span>
-                    </div>
-                </div>
+                {historyChatLength > 0 ? (
+                    historyOfMessages.map(({ text, date, isReactTutor }, index) => (
+                        <div key={index}
+                             className={`d-flex flex-column w-100 message ${isReactTutor ? `align-items-start ${styles.messageReactTutor}` : `align-items-end ${styles.messageUser}`}`}
+                        >
+                            {isReactTutor ? (
+                                <div className={`${styles.headerMessage} ${styles.headerMessageReactTutor} pe-md-0 pe-2`}>
+                                    <img src={info.reactTutorAvatar} width='35px' alt="avatar" />
+                                    <span className='ps-2'>ReactTutor</span>
+                                </div>
+                            ): (
+                                <div
+                                    className={`${styles.headerMessage} ${styles.headerMessageUser} pe-md-0 pe-2`}>
+                                    <span className='pe-2'>{info.userName}</span>
+                                    <img src={info.userAvatar} alt="avatar"/>
+                                </div>
+                            )}
+                            <div
+                                className={`${styles.contentMessage} ${isReactTutor ? styles.contentMessageReactTutor : styles.contentMessageUser} mt-2 ps-3`}>
+                                <p className='m-0'>{text}</p>
+                            </div>
+                            <div className={`${styles.footerMessage} ${isReactTutor ? `ps-2` : 'pe-2'} mt-1`}>
+                        <span>
+                            {date.toLocaleTimeString('en-CA', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: false
+                            })}
+                        </span>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    isShowStartMessage ? (
+                        <div className="d-flex flex-column w-100 align-items-start message messageReactTutor">
+                            <div className={`${styles.headerMessage} ${styles.headerMessageReactTutor}`}>
+                                <img src={largeLogo} width="35px" alt="largeLogo" />
+                                <span className="ps-2">ReactTutor</span>
+                            </div>
+                            <div className={`${styles.contentMessage} ${styles.contentMessageReactTutor} mt-3`}>
+                                <p className="m-0">Привет! Я ReactTutor, твой помощник в изучении фронтенда.</p>
+                            </div>
+                            <div className={`${styles.footerMessage} mt-1`}>
+                                <span>20:27</span>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className='text-center align-items-center'>Добро пожаловать! Что бы начать беседу нажмите кнопку ниже</div>
+                    )
+                )}
 
-                <div className={`d-flex flex-column w-100 align-items-end message messageUser`}>
-                    <div className={`${styles.headerMessage} ${styles.headerMessageUser}`}>
-                        <span className='pe-2'>Александр</span>
-                        <img src={userAvatar} width='35px' alt="largeLogo"/>
-                    </div>
-                    <div className={`${styles.contentMessage} ${styles.contentMessageUser} mt-3`}>
-                        <p className='m-0'>Пожалуй я выберу Js</p>
-                    </div>
-                    <div className={`${styles.footerMessage} mt-1`}>
-                        <span>20:29</span>
-                    </div>
-                </div>
-                <div
-                    className={`d-flex flex-column w-100 align-items-start message messageReactTutor`}>
-                    <div className={`${styles.headerMessage} ${styles.headerMessageReactTutor}`}>
-                        <img src={largeLogo} width='35px' alt="largeLogo"/>
-                        <span className='ps-2'>ReactTutor</span>
-                    </div>
-                    <div className={`${styles.contentMessage} ${styles.contentMessageReactTutor} mt-3`}>
-                        <p className='m-0'>Привет! Я ReactTutor, твой помощник в изучении фронтенда.</p>
-                    </div>
-                    <div className={`${styles.footerMessage} mt-1`}>
-                        <span>20:27</span>
-                    </div>
-                </div>
 
-                <div className={`d-flex flex-column w-100 align-items-end message messageUser`}>
-                    <div className={`${styles.headerMessage} ${styles.headerMessageUser}`}>
-                        <span className='pe-2'>Александр</span>
-                        <img src={userAvatar} width='35px' alt="largeLogo"/>
-                    </div>
-                    <div className={`${styles.contentMessage} ${styles.contentMessageUser} mt-3`}>
-                        <p className='m-0'>Пожалуй я выберу Js</p>
-                    </div>
-                    <div className={`${styles.footerMessage} mt-1`}>
-                        <span>20:29</span>
-                    </div>
-                </div>
-                <div
-                    className={`d-flex flex-column w-100 align-items-start message messageReactTutor`}>
-                    <div className={`${styles.headerMessage} ${styles.headerMessageReactTutor}`}>
-                        <img src={largeLogo} width='35px' alt="largeLogo"/>
-                        <span className='ps-2'>ReactTutor</span>
-                    </div>
-                    <div className={`${styles.contentMessage} ${styles.contentMessageReactTutor} mt-3`}>
-                        <p className='m-0'>Привет! Я ReactTutor, твой помощник в изучении фронтенда.</p>
-                    </div>
-                    <div className={`${styles.footerMessage} mt-1`}>
-                        <span>20:27</span>
-                    </div>
-                </div>
-
-                <div className={`d-flex flex-column w-100 align-items-end message messageUser`}>
-                    <div className={`${styles.headerMessage} ${styles.headerMessageUser}`}>
-                        <span className='pe-2'>Александр</span>
-                        <img src={userAvatar} width='35px' alt="largeLogo"/>
-                    </div>
-                    <div className={`${styles.contentMessage} ${styles.contentMessageUser} mt-3`}>
-                        <p className='m-0'>Пожалуй я выберу Js</p>
-                    </div>
-                    <div className={`${styles.footerMessage} mt-1`}>
-                        <span>20:29</span>
-                    </div>
-                </div>
-                <div
-                    className={`d-flex flex-column w-100 align-items-start message messageReactTutor`}>
-                    <div className={`${styles.headerMessage} ${styles.headerMessageReactTutor}`}>
-                        <img src={largeLogo} width='35px' alt="largeLogo"/>
-                        <span className='ps-2'>ReactTutor</span>
-                    </div>
-                    <div className={`${styles.contentMessage} ${styles.contentMessageReactTutor} mt-3`}>
-                        <p className='m-0'>Привет! Я ReactTutor, твой помощник в изучении фронтенда.</p>
-                    </div>
-                    <div className={`${styles.footerMessage} mt-1`}>
-                        <span>20:27</span>
-                    </div>
-                </div>
-
-                <div className={`d-flex flex-column w-100 align-items-end message messageUser`}>
-                    <div className={`${styles.headerMessage} ${styles.headerMessageUser}`}>
-                        <span className='pe-2'>Александр</span>
-                        <img src={userAvatar} width='35px' alt="largeLogo"/>
-                    </div>
-                    <div className={`${styles.contentMessage} ${styles.contentMessageUser} mt-3`}>
-                        <p className='m-0'>Пожалуй я выберу Js</p>
-                    </div>
-                    <div className={`${styles.footerMessage} mt-1`}>
-                        <span>20:29</span>
-                    </div>
-                </div>
+                {/*<div className={`d-flex flex-column w-100 align-items-end message messageUser`}>*/}
+                {/*    <div className={`${styles.headerMessage} ${styles.headerMessageUser}`}>*/}
+                {/*        <span className='pe-2'>Александр</span>*/}
+                {/*        <img src={userAvatar} width='35px' alt="largeLogo"/>*/}
+                {/*    </div>*/}
+                {/*    <div className={`${styles.contentMessage} ${styles.contentMessageUser} mt-3`}>*/}
+                {/*        <p className='m-0'>Пожалуй я выберу Js</p>*/}
+                {/*    </div>*/}
+                {/*    <div className={`${styles.footerMessage} mt-1`}>*/}
+                {/*        <span>20:29</span>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
+            <ChatForm setRef={handleSetRef} historyChatLength={historyChatLength} mainContentRef={mainContentRef} mainContentWidth={mainContentWidth} layoutState={layoutState} setLayoutState={setLayoutState} />
 
-            <Form
-                className={`mt-auto container-fluid pb-md-5 pb-3 position-fixed bottom-0 ${styles.chatFormWrapper}`}
-                ref={chatFormWrapperRef}>
-                <Form.Group className={`row`} ref={chatInputElementRef} controlId="formChat">
-                    <div className="col-9 col-md-11 ps-0 pe-3">
-                        <Form.Control
-                            as='textarea'
-                            className={`${styles.formControlChat} ${layoutState.isFormScroll && `overflow-y-scroll ${styles.formScroll}`} pe-5`}
-                            ref={formControlChatRef}
-                            rows={1}
-                            onInput={handleInput}
-                            onChange={handleChangeTextarea}
-                            placeholder="Ваш вопрос"
-                        />
-                    </div>
-                    <div
-                        className={`col-2 ps-md-4 me-0 ps-lg-2 ps-xxl-4 ms-3 ms-md-auto ps-0 col-md-1 d-flex ${layoutState.isButtonDown && 'align-items-end pb-3'}`}
-                        ref={wrapperButtonSubmitRef}>
-                        <Button className={`${styles.buttonSubmit} ${layoutState.isDisabledButton && 'disabled'}`} ref={submitButton}>
-                            <img src={send} alt='Отправить'  style={{width:'1.5rem'}}/>
-                        </Button>
-                    </div>
-                </Form.Group>
-            </Form>
+
         </main>
     )
 

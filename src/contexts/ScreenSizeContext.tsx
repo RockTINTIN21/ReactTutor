@@ -7,7 +7,7 @@ type ScreenSizeContextType = {
     navbarHeight: number;
     setNavbarHeight: Dispatch<SetStateAction<number>>;
 }
-export const ScreenSizeContext = createContext<ScreenSizeContextType | null>(null);
+export const ScreenSizeContext = createContext<ScreenSizeContextType >(null!);
 
 interface ScreenSizeProviderProps {
     children: ReactNode;

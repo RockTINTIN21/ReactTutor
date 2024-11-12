@@ -1,16 +1,37 @@
-.buttonStart, a{
+.btnHome{
     border-radius: 20px;
+    border-color:transparent;
+}
+
+.button, a{
     background-color:transparent ;
     border-color: white;
     color: white;
     text-decoration: none;
 }
+.button:hover,.button:active{
+    background-color:#58C4DC;
+    color: black;
+    border-color: transparent;
+}
+.button:focus {
+    outline: none; /* Убираем фокусное состояние */
+}
 .buttonStart:hover{
     text-decoration: none;
     background-color:#58C4DC ;
     color: black;
-    border-color: #58C4DC;
+
 }
 a:hover{
+    color: black;
+}
+.buttonMobile{
+    background-color:#58C4DC;
+    color: black;
+}
+.buttonMobile:hover,.buttonMobile:active{
+    border-color: transparent;
+    background-color:#58C4DC;
     color: black;
 }

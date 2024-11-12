@@ -1,8 +1,9 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 
-type useElementWidthHook = [RefObject<HTMLElement>, number];
+type useElementWidthHook = [RefObject<HTMLDivElement>, number];
+
 const useElementWidth = (): useElementWidthHook => {
-    const ref = useRef<HTMLElement>(null!);
+    const ref = useRef<HTMLDivElement | null>(null);
     const [width, setWidth] = useState<number>(0);
 
     const updateWidth = () => {
@@ -12,20 +13,17 @@ const useElementWidth = (): useElementWidthHook => {
     };
 
     useEffect(() => {
-        if(ref.current){
+        if (ref.current) {
             updateWidth();
+            const currentRef = ref.current; // Сохраняем текущее значение ref.current
             const resizeObserver = new ResizeObserver(updateWidth);
 
-            resizeObserver.observe(ref.current!);
+            resizeObserver.observe(currentRef);
 
             return () => {
-                if(ref.current){
-                    resizeObserver.unobserve(ref.current!);
-                }
-
+                resizeObserver.unobserve(currentRef);
             };
         }
-
     }, []);
 
     return [ref, width];

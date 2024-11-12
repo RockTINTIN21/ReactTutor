@@ -19,8 +19,9 @@ function Header({isMainPage}:HeaderType) {
         setNavbarHeight(navbarHeight)
 
     },[navbarHeight])
+    const isDesktop:boolean = window.innerWidth >= 768;
     return(
-        <Navbar collapseOnSelect expand="lg" className={`container  ${isMainPage && 'fixed-top ps-3 pe-3'}`} ref={refNavbar}>
+        <Navbar collapseOnSelect expand="lg" className={`container  ${isMainPage && 'fixed-top ps-3 pe-3'} ${isDesktop && `bg-transparent`}`} ref={refNavbar}>
             <Navbar.Brand href="/">
                 <img
                     alt="ReactTutor"

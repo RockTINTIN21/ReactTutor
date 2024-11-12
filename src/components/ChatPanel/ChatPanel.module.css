@@ -8,7 +8,7 @@
     color: #6D6D6D;
 }
 .headerMessage {
-    font-size: 20px;
+    font-size: 1.1rem;
 }
 .contentMessage {
     display: inline-block;
@@ -32,7 +32,13 @@
 .headerMessageUser {
     color: #E0E0E0;
 }
-
+.headerMessageUser>img {
+    color: #E0E0E0;
+    width: 1.8rem;
+}
+/*.messageUser{*/
+/*    width: 100px;*/
+/*}*/
 .clearButtonSubmit {
     background-color: transparent;
     border: none;
@@ -117,6 +123,126 @@
 .formScroll{
     height: 250px;
 }
+@media (max-width: 767px){
+    .contentMessageUser {
+        max-width: 100%;
+    }
 
+}
+@media (min-width: 768px) {
+    .contentMessageUser {
+        max-width: 50%;
+    }
+
+}
+
+
+
+
+
+
+
+
+.btnsStart {
+    border-radius: 24px;
+    border: transparent;
+    color: black;
+    font-weight: bold;
+    height: 2.8rem;
+    transition: color 0.3s ease;
+}
+
+.btnStart {
+    background: linear-gradient(90deg, #00C9FF, #92FE9D);
+    color: black;
+    background-size: 200% 100%;
+    background-position: 0% 0;
+    transition: background-position 0.5s ease;
+}
+
+.btnStart:hover {
+    background-position: 100% 0;
+    color: black;
+}
+
+.btnStart:active {
+    color: black!important;
+}
+.btnStart:after {
+    color: black!important;
+}
+
+.btnStarter {
+    background: linear-gradient(90deg, #A6E22E, #8CC623, #C8FF72, #A9D62F);
+    color: black;
+    background-size: 200% 100%;
+    background-position: 0% 0;
+    transition: background-position 0.5s ease;
+}
+
+.btnStarter:hover {
+    background-position: 100% 0;
+    color: black!important;
+}
+.btnStarter:active{
+    color: black!important;
+}
+.btnStarter:after{
+    color: black!important;
+}
+
+
+.btnHtmlCss {
+    background: linear-gradient(90deg, #FF6E6E, #5A3EBD);
+    color: white;
+    background-size: 200% 100%;
+    background-position: 0% 0;
+    transition: background-position 0.5s ease;
+}
+
+.btnHtmlCss:hover {
+    background-position: 100% 0;
+    color: white!important;
+}
+.btnHtmlCss:after {
+    color: white!important;
+}
+
+
+.btnJs {
+    background: linear-gradient(90deg, #F7DF1E, #F7A200);
+    color: black;
+    background-size: 200% 100%;
+    background-position: 0% 0;
+    transition: background-position 0.5s ease;
+}
+
+.btnJs:hover {
+    background-position: 100% 0;
+    color: black!important;
+}
+.btnJs:after {
+    background-position: 100% 0;
+    color: black!important;
+}
+
+.btnJs:after{
+    color: black!important;
+}
+.btnReact {
+    background: linear-gradient(90deg, #48BFEF, #62CCFF, #3AA6DF, #50BBFF);
+    color: black;
+    background-size: 200% 100%;
+    background-position: 0% 0;
+    transition: background-position 0.5s ease;
+}
+
+.btnReact:hover {
+    background-position: 100% 0;
+    color: white!important;
+}
+.btnReact:after{
+    color: white!important;
+}
 
 

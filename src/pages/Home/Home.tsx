@@ -8,9 +8,11 @@ import {Button} from "react-bootstrap";
 // @ts-ignore
 import {Helmet} from "react-helmet";
 import {Link} from "react-router-dom";
-import React from "react";
+import React, {useContext} from "react";
+import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.tsx";
 
 function Home(){
+    const isMobile = window.innerWidth <= 768;
     return(
         <div className='home-container h-100'>
             <Helmet><title>ReactTutorAI</title></Helmet>
@@ -18,12 +20,12 @@ function Home(){
             <div className="content h-100">
                 <Header isMainPage={true}/>
                 <div className="main h-100 justify-content-center align-items-center d-flex flex-column">
-                    <img src={largeLogo} width='100px' alt="Logo"/>
+                    <img src={largeLogo} width='100px' className='mb-4' alt="Logo"/>
                     <h1>React.TutorAI</h1>
                     <p>Личный помощник в изучении фронтенд-разработки.</p>
                     <div className="buttons d-md-flex col-12 col-md-6 justify-content-center">
-                        <Link to='/Chat' className='w-100 m-md-3'><Button className={`w-100 ${styles.buttonStart}`}>Начать изучение</Button></Link>
-                        <Link to='/notfound' className='w-100 m-md-3'><Button className={` w-100 mt-3 mt-md-0 ${styles.buttonStart}`}>О проекте</Button></Link>
+                        <Link to='/Chat' className='w-100 m-md-3 '><Button className={`w-100 mt-3 mt-md-0 ${styles.btnHome} ${isMobile ? styles.buttonMobile : styles.button}`}>Начать изучение</Button></Link>
+                        <Link to='/notfound' className='w-100 m-md-3'><Button className={`w-100 mt-3 mt-md-0 ${styles.btnHome} ${isMobile ? styles.buttonMobile : styles.button}`}>О проекте</Button></Link>
                     </div>
                 </div>
             </div>
