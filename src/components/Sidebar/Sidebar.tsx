@@ -158,12 +158,11 @@ function Sidebar({onChangeIsCollapsed}:SidebarType){
                 }
             }
             sideBarRef.current.addEventListener('transitionend',handleTransitionEnd);
-
-                return () => {
-                    if(sideBarRef.current){
-                        sideBarRef.current.removeEventListener('transitionend',handleTransitionEnd);
-                    }
+            return () => {
+                if(sideBarRef.current){
+                    sideBarRef.current.removeEventListener('transitionend',handleTransitionEnd);
                 }
+            }
 
 
         }

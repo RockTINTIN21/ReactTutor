@@ -39,51 +39,8 @@
 /*.messageUser{*/
 /*    width: 100px;*/
 /*}*/
-.clearButtonSubmit {
-    background-color: transparent;
-    border: none;
-    z-index: 2;
-}
 
-.formControlChat {
-    z-index: 1;
-    border-radius: 30px;
-    border-color: transparent;
-    background-color: #4A4A4A;
-    color: #E1E3E7;
-    box-shadow: none;
-    line-height: 1.5;
-    box-sizing: border-box;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 60px;
-    font-size: 16px;
-    resize: none;
-    overflow: hidden;
-    min-height: 3rem;
-    max-height: 250px;
-}
-.buttonSubmit {
-    background-color: transparent !important;
-    border: none;
-    border: 0;
-}
-.formControlChat:active, .formControlChat:focus, .formControlChat:placeholder-shown {
-    border-radius: 30px;
-    border-color: transparent;
-    background-color: #4A4A4A !important;
-    color: white;
-    box-shadow: none;
-    line-height: 1.5;
-    box-sizing: border-box;
-    min-height: 3rem;
-    overflow: hidden;
-}
 
-.formControlChat::placeholder {
-    color: #C7C7C7;
-}
 .chatScroll::-webkit-scrollbar, .formControlChat::-webkit-scrollbar {
     width: 7px;
     background-color: #2D2D2D;
@@ -92,23 +49,7 @@
 .chatScroll{
     overflow-y: scroll;
 }
-.chatScroll::-webkit-scrollbar-thumb {
-    background-color: #4A4A4A;
-    border-radius: 1rem;
-}
-.formControlChat::-webkit-scrollbar {
-    width: 7px;
-    background-color: transparent;
-    border-radius: 1rem;
-}
 
-.formControlChat::-webkit-scrollbar-thumb {
-    background-color: #2D2D2D;
-    border-radius: 1rem;
-}
-.chatFormWrapper {
-    background-color: transparent;
-}
 .wrapperChat {
     transition: max-width 0.2s ease; /* Плавное изменение ширины */
 }
@@ -120,9 +61,7 @@
 .wrapperChatCollapsed {
     max-width: 91.6667%; /* Эквивалент col-md-11 */
 }
-.formScroll{
-    height: 250px;
-}
+
 @media (max-width: 767px){
     .contentMessageUser {
         max-width: 100%;
@@ -137,112 +76,5 @@
 }
 
 
-
-
-
-
-
-
-.btnsStart {
-    border-radius: 24px;
-    border: transparent;
-    color: black;
-    font-weight: bold;
-    height: 2.8rem;
-    transition: color 0.3s ease;
-}
-
-.btnStart {
-    background: linear-gradient(90deg, #00C9FF, #92FE9D);
-    color: black;
-    background-size: 200% 100%;
-    background-position: 0% 0;
-    transition: background-position 0.5s ease;
-}
-
-.btnStart:hover {
-    background-position: 100% 0;
-    color: black;
-}
-
-.btnStart:active {
-    color: black!important;
-}
-.btnStart:after {
-    color: black!important;
-}
-
-.btnStarter {
-    background: linear-gradient(90deg, #A6E22E, #8CC623, #C8FF72, #A9D62F);
-    color: black;
-    background-size: 200% 100%;
-    background-position: 0% 0;
-    transition: background-position 0.5s ease;
-}
-
-.btnStarter:hover {
-    background-position: 100% 0;
-    color: black!important;
-}
-.btnStarter:active{
-    color: black!important;
-}
-.btnStarter:after{
-    color: black!important;
-}
-
-
-.btnHtmlCss {
-    background: linear-gradient(90deg, #FF6E6E, #5A3EBD);
-    color: white;
-    background-size: 200% 100%;
-    background-position: 0% 0;
-    transition: background-position 0.5s ease;
-}
-
-.btnHtmlCss:hover {
-    background-position: 100% 0;
-    color: white!important;
-}
-.btnHtmlCss:after {
-    color: white!important;
-}
-
-
-.btnJs {
-    background: linear-gradient(90deg, #F7DF1E, #F7A200);
-    color: black;
-    background-size: 200% 100%;
-    background-position: 0% 0;
-    transition: background-position 0.5s ease;
-}
-
-.btnJs:hover {
-    background-position: 100% 0;
-    color: black!important;
-}
-.btnJs:after {
-    background-position: 100% 0;
-    color: black!important;
-}
-
-.btnJs:after{
-    color: black!important;
-}
-.btnReact {
-    background: linear-gradient(90deg, #48BFEF, #62CCFF, #3AA6DF, #50BBFF);
-    color: black;
-    background-size: 200% 100%;
-    background-position: 0% 0;
-    transition: background-position 0.5s ease;
-}
-
-.btnReact:hover {
-    background-position: 100% 0;
-    color: white!important;
-}
-.btnReact:after{
-    color: white!important;
-}
 
 

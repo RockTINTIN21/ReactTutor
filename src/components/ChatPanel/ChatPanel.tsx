@@ -22,31 +22,31 @@ type historyOfMessagesType = {
     isReactTutor: boolean,
 }[]
 const historyOfMessages:historyOfMessagesType = [
-    {
-        text: 'Привет! Я ReactTutor, твой помощник в изучении фронтенда.',
-        date: new Date(),
-        isReactTutor:true,
-    },
-    {
-        text: 'Привет!',
-        date: new Date(),
-        isReactTutor:false,
-    },
-    {
-        text: 'Теперь вы можете добавлять новые объекты в historyOfMessages, и TypeScript будет проверять тип каждого объекта в массиве.',
-        date: new Date(),
-        isReactTutor:true,
-    },
-    {
-        text: ' message.date.toLocaleDateString(\'en-CA\', {\n' +
-            '                                    hour: \'2-digit\',\n' +
-            '                                    minute: \'2-digit\',\n' +
-            '                                    hour12: false\n' +
-            '                                }).replace(\'-\', \':\')\n' +
-            'как выводить только часы и минуты',
-        date: new Date(),
-        isReactTutor:false,
-    },
+    // {
+    //     text: 'Привет! Я ReactTutor, твой помощник в изучении фронтенда.',
+    //     date: new Date(),
+    //     isReactTutor:true,
+    // },
+    // {
+    //     text: 'Привет!',
+    //     date: new Date(),
+    //     isReactTutor:false,
+    // },
+    // {
+    //     text: 'Теперь вы можете добавлять новые объекты в historyOfMessages, и TypeScript будет проверять тип каждого объекта в массиве.',
+    //     date: new Date(),
+    //     isReactTutor:true,
+    // },
+    // {
+    //     text: ' message.date.toLocaleDateString(\'en-CA\', {\n' +
+    //         '                                    hour: \'2-digit\',\n' +
+    //         '                                    minute: \'2-digit\',\n' +
+    //         '                                    hour12: false\n' +
+    //         '                                }).replace(\'-\', \':\')\n' +
+    //         'как выводить только часы и минуты',
+    //     date: new Date(),
+    //     isReactTutor:false,
+    // },
 ]
 function ChatPanel({sidebarIsCollapsed}: ChatPanelType) {
     const [chatRef,clientChatMaxHeight] = useElementHeight()
@@ -180,13 +180,13 @@ function ChatPanel({sidebarIsCollapsed}: ChatPanelType) {
                                 <p className='m-0'>{text}</p>
                             </div>
                             <div className={`${styles.footerMessage} ${isReactTutor ? `ps-2` : 'pe-2'} mt-1`}>
-                        <span>
-                            {date.toLocaleTimeString('en-CA', {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                hour12: false
-                            })}
-                        </span>
+                                <span>
+                                    {date.toLocaleTimeString('en-CA', {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        hour12: false
+                                    })}
+                                </span>
                             </div>
                         </div>
                     ))

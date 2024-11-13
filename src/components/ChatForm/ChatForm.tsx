@@ -2,9 +2,10 @@ import userAvatar from "../../assets/icons/avatar.png";
 import largeLogo from "../../assets/icons/largeLogo.png";
 import React, {Dispatch, Ref, SetStateAction, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {Button, Form, Row} from "react-bootstrap";
-import styles from "../ChatPanel/ChatPanel.module.css";
+import styles from "./ChatForm.module.css";
 import send from "../../assets/icons/send.png";
 import {ScreenSizeContext} from "../../contexts/ScreenSizeContext.tsx";
+import LaunchChat from "../LaunchChat/LaunchChat.tsx";
 
 type LayoutStateType = {
     isChatScroll: boolean;
@@ -12,8 +13,8 @@ type LayoutStateType = {
     isDisabledButton: boolean;
     isDesktop: boolean;
     isButtonDown: boolean;
-
 };
+
 type ChatFormType = {
     layoutState: LayoutStateType;
     setLayoutState: Dispatch<SetStateAction<LayoutStateType>>;
@@ -23,8 +24,8 @@ type ChatFormType = {
     mainContentRef: React.RefObject<HTMLDivElement>;
 }
 function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,mainContentWidth,setRef}:ChatFormType) {
-    const [isShowStartMessage,setIsShowStartMessage] = useState<boolean>(false);
-    const [isShowStartButtons,setIsShowStartButtons] = useState<boolean>(false)
+    // const [isShowStartMessage,setIsShowStartMessage] = useState<boolean>(false);
+    // const [isShowStartButtons,setIsShowStartButtons] = useState<boolean>(false)
 
     const submitButton = useRef<HTMLButtonElement>(null!);
     const chatInputElementRef = useRef<HTMLDivElement>(null!)
@@ -32,28 +33,24 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
     const wrapperButtonSubmitRef = useRef<HTMLDivElement>(null!);
     const [formValue, setFormValue] = useState<string>("");
     const chatFormWrapperRef = useRef<HTMLFormElement>(null!);
+    const [isShowFirstMessage,setIsShowFirstMessage] = useState<boolean>(false)
+
+
     // const [mainContentRef,setMainContentRef] = useState<HTMLDivElement>(null!)
     const {clientWindowSize} = useContext(ScreenSizeContext);
     // const handleSetMainContentRef = (ref:HTMLDivElement | null) =>{
     //     setMainContentRef(setMainContentRef)
     // }
+    // Функция изменения высоты поля ввода и включения скролла в поле ввода.
     useEffect(() => {
         if(setRef){
             setRef(chatInputElementRef.current);
         }
     }, [setRef]);
-
-    const onStartChat = () =>{
-        setTimeout(()=>{
-            setIsShowStartButtons(true)
-            setTimeout(()=>{
-                setIsShowStartMessage(true);
-            },3000)
-        },3000)
-
+    const handleShowFirstMessage = () =>{
+        setIsShowFirstMessage(true)
     }
-
-    // Функция изменения высоты поля ввода и включения скролла в поле ввода.
+    // setIsShowFirstMessage(true)
     const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
         setFormValue(e.currentTarget.value);
         const computedStyles = window.getComputedStyle(formControlChatRef.current);
@@ -130,19 +127,21 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
                     </Form.Group>
                 </Form>
             ) : (
-                !isShowStartButtons ? (
-                    <Button className={`w-100 ${styles.btnStart} ${styles.btnsStart}`} onClick={onStartChat} >Начать беседу</Button>
-                ):(
-                    <Row className="p-3 d-flex gap-3">
-                        <Button className={`col-12  mb-md-2 ${styles.btnStarter} ${styles.btnsStart}`}>Я только начинаю</Button>
-                        <Button className={`col btn ${styles.btnHtmlCss} ${styles.btnsStart}`}>HTML/CSS</Button>
-                        <Button className={`col btn ${styles.btnJs} ${styles.btnsStart}`}>JS/TypeScript</Button>
-                        <Button className={`col btn ${styles.btnReact} ${styles.btnsStart}`}>React</Button>
-                    </Row>
-
-
-                )
-
+                // layoutStateButtons.isShowStartButton ? (
+                //     <Button className={`w-100 ${styles.btnStart} ${styles.btnsStart}
+                //     ${layoutStateButtons.isShowStartButtonStyle && styles.btnsStartShow}`} onClick={onStartChat}
+                //             ref={startButtonRef} onTransitionEnd={handleTransitionEndStartButton}>Начать беседу</Button>
+                // ):(
+                //     <Row className="p-3 d-flex gap-3">
+                //         <Button className={`col-12  mb-md-2 ${styles.btnStarter} ${styles.btnsStart} ${layoutStateButtons.isShowLevelButtons && styles.btnsStartShow}`}>Я только начинаю</Button>
+                //         <Button className={`col btn ${styles.btnHtmlCss} ${styles.btnsStart} ${layoutStateButtons.isShowLevelButtons && styles.btnsStartShow}`}>HTML/CSS</Button>
+                //         <Button className={`col btn ${styles.btnJs} ${styles.btnsStart} ${layoutStateButtons.isShowLevelButtons && styles.btnsStartShow}`}>JS/TypeScript</Button>
+                //         <Button className={`col btn ${styles.btnReact} ${styles.btnsStart} ${layoutStateButtons.isShowLevelButtons && styles.btnsStartShow}`}>React</Button>
+                //     </Row>
+                //
+                //
+                // )
+                <LaunchChat handleShowFirstMessage={}/>
             )
             }
         </>
