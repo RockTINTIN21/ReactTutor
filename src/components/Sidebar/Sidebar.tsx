@@ -167,7 +167,7 @@ function Sidebar({onChangeIsCollapsed}:SidebarType){
 
         }
 
-    },[layoutState])
+    },[layoutState.isDesktop,layoutState.isCollapsed])
 
     //Функция скрытия сайдбара
     const handleShowSidebar = (e:React.MouseEvent<HTMLElement>) => {

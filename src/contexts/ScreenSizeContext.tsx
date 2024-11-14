@@ -6,6 +6,8 @@ type ScreenSizeContextType = {
     setMainContentSize: Dispatch<SetStateAction<[number,number]>>;
     navbarHeight: number;
     setNavbarHeight: Dispatch<SetStateAction<number>>;
+    isShowFirstMessage: boolean;
+    setIsShowFirstMessage: Dispatch<SetStateAction<boolean>>;
 }
 export const ScreenSizeContext = createContext<ScreenSizeContextType >(null!);
 
@@ -17,6 +19,10 @@ export function ScreenSizeProvider({children}: ScreenSizeProviderProps) {
     const [clientWindowSize, setClientWindowSize] = useState<[number,number]>([window.innerWidth, window.innerHeight]);
     const [mainContentSize,setMainContentSize] = useState<[number,number]>([0,0]);
     const [navbarHeight,setNavbarHeight] = useState<number>(0);
+    const [isShowFirstMessage, setIsShowFirstMessage] = useState<boolean>(false);
+    useEffect(() => {
+        console.log('Показать первое сообщение!')
+    }, [isShowFirstMessage]);
     useEffect(() => {
         const resizeHandler = () => setClientWindowSize([window.innerWidth, window.innerHeight])
         window.addEventListener('resize', resizeHandler);
@@ -25,7 +31,7 @@ export function ScreenSizeProvider({children}: ScreenSizeProviderProps) {
         }
     },[])
     return(
-        <ScreenSizeContext.Provider value={{clientWindowSize, mainContentSize,setMainContentSize,setNavbarHeight,navbarHeight}}>
+        <ScreenSizeContext.Provider value={{clientWindowSize, mainContentSize,setMainContentSize,setNavbarHeight,navbarHeight,isShowFirstMessage,setIsShowFirstMessage}}>
             {children}
         </ScreenSizeContext.Provider>
     )

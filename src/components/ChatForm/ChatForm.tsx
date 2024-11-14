@@ -33,7 +33,7 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
     const wrapperButtonSubmitRef = useRef<HTMLDivElement>(null!);
     const [formValue, setFormValue] = useState<string>("");
     const chatFormWrapperRef = useRef<HTMLFormElement>(null!);
-    const [isShowFirstMessage,setIsShowFirstMessage] = useState<boolean>(false)
+    // const [isShowFirstMessage,setIsShowFirstMessage] = useState<boolean>(false)
 
 
     // const [mainContentRef,setMainContentRef] = useState<HTMLDivElement>(null!)
@@ -47,9 +47,6 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
             setRef(chatInputElementRef.current);
         }
     }, [setRef]);
-    const handleShowFirstMessage = () =>{
-        setIsShowFirstMessage(true)
-    }
     // setIsShowFirstMessage(true)
     const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
         setFormValue(e.currentTarget.value);
@@ -64,10 +61,7 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
             isButtonDown:height> minHeight
         }))
     };
-    useEffect(()=>{
-        console.log(layoutState.isFormScroll);
 
-    },[layoutState.isFormScroll]);
 
     // Хук сброса высоты по умолчанию.
     useLayoutEffect(() => {
@@ -101,7 +95,7 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
     }
     return(
         <>
-            {historyChatLength > 0 ? (
+            {historyChatLength > 1 ? (
                 <Form
                     className={`mt-auto container-fluid pb-md-5 pb-3 position-fixed bottom-0 ${styles.chatFormWrapper}`}
                     ref={chatFormWrapperRef}>
@@ -141,7 +135,7 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
                 //
                 //
                 // )
-                <LaunchChat handleShowFirstMessage={}/>
+                <LaunchChat/>
             )
             }
         </>
