@@ -3,8 +3,9 @@ type TotalHeightTextType = {
     refComponent: RefObject<HTMLElement>,
     onHeightChange:(height: number) => void,
     querySelector: string
+    currentLength: number
 }
-function TotalHeightText({refComponent,onHeightChange,querySelector}:TotalHeightTextType) {
+function TotalHeightText({refComponent,onHeightChange,querySelector,currentLength}:TotalHeightTextType) {
         useEffect(() => {
             if(refComponent.current && querySelector){
                 const totalHeightObserver = refComponent.current.querySelectorAll(querySelector);
@@ -21,7 +22,7 @@ function TotalHeightText({refComponent,onHeightChange,querySelector}:TotalHeight
                     resizeObserverComponent.disconnect();
                 }
             }
-        },[refComponent,querySelector,onHeightChange]);
+        },[refComponent,querySelector,onHeightChange,currentLength]);
     return null
 }
 export default TotalHeightText;

@@ -14,7 +14,21 @@ type LayoutStateType = {
     isDesktop: boolean;
     isButtonDown: boolean;
 };
+type Message = {
+    messageID: string;
+    text: string;
+    date: Date;
+    isReactTutor: boolean;
+    isAnimation: boolean;
+};
 
+type UserData = {
+    userID: string;
+    username: string;
+    userAvatar: string;
+    isNewChat: boolean;
+    historyChat: Message[];
+};
 type ChatFormType = {
     layoutState: LayoutStateType;
     setLayoutState: Dispatch<SetStateAction<LayoutStateType>>;
@@ -22,8 +36,9 @@ type ChatFormType = {
     mainContentWidth:number;
     setRef:(ref: HTMLDivElement | null) => void;
     mainContentRef: React.RefObject<HTMLDivElement>;
+    userData: UserData;
 }
-function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,mainContentWidth,setRef}:ChatFormType) {
+function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,mainContentWidth,setRef,userData}:ChatFormType) {
     // const [isShowStartMessage,setIsShowStartMessage] = useState<boolean>(false);
     // const [isShowStartButtons,setIsShowStartButtons] = useState<boolean>(false)
 
@@ -35,13 +50,16 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
     const chatFormWrapperRef = useRef<HTMLFormElement>(null!);
     // const [isShowFirstMessage,setIsShowFirstMessage] = useState<boolean>(false)
 
-
     // const [mainContentRef,setMainContentRef] = useState<HTMLDivElement>(null!)
     const {clientWindowSize} = useContext(ScreenSizeContext);
+
     // const handleSetMainContentRef = (ref:HTMLDivElement | null) =>{
     //     setMainContentRef(setMainContentRef)
     // }
     // Функция изменения высоты поля ввода и включения скролла в поле ввода.
+    // useEffect(() => {
+    //     localStorage.
+    // }, []);
     useEffect(() => {
         if(setRef){
             setRef(chatInputElementRef.current);
@@ -61,7 +79,10 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
             isButtonDown:height> minHeight
         }))
     };
+    useEffect(()=>{
+        console.log(layoutState.isFormScroll);
 
+    },[layoutState.isFormScroll]);
 
     // Хук сброса высоты по умолчанию.
     useLayoutEffect(() => {
@@ -79,7 +100,7 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
 
 
     // Функция измения длины поля ввода.
-    useLayoutEffect(() => {
+    useEffect(() => {
         if(formControlChatRef.current && mainContentRef.current){
             formControlChatRef.current.style.width = `${mainContentRef.current!.offsetWidth}px`;
             formControlChatRef.current.style.width = clientWindowSize[0] >= 768 ? `${mainContentRef.current!.offsetWidth}px` : ` ${mainContentRef.current!.offsetWidth-10}px`;
@@ -95,10 +116,12 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
     }
     return(
         <>
-            {historyChatLength > 1 ? (
-                <Form
-                    className={`mt-auto container-fluid pb-md-5 pb-3 position-fixed bottom-0 ${styles.chatFormWrapper}`}
-                    ref={chatFormWrapperRef}>
+            {userData.isNewChat ? (
+                userData.historyChat.length > 0 && !userData.historyChat[0].isAnimation ? (
+                    <LaunchChat />
+                ) : null
+            ) : (
+                <Form className={`mt-auto container-fluid pb-md-5 pb-3 position-fixed bottom-0 ${styles.chatFormWrapper}`} ref={chatFormWrapperRef}>
                     <Form.Group className={`row`} ref={chatInputElementRef} controlId="formChat">
                         <div className="col-9 col-md-11 ps-0 pe-3">
                             <Form.Control
@@ -111,8 +134,7 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
                                 placeholder="Ваш вопрос"
                             />
                         </div>
-                        <div
-                            className={`col-2 ps-md-4 me-0 ps-lg-2 ps-xxl-4 ms-3 ms-md-auto ps-0 col-md-1 d-flex ${layoutState.isButtonDown && 'align-items-end pb-3'}`}
+                        <div className={`col-2 ps-md-4 me-0 ps-lg-2 ps-xxl-4 ms-3 ms-md-auto ps-0 col-md-1 d-flex ${layoutState.isButtonDown && 'align-items-end pb-3'}`}
                             ref={wrapperButtonSubmitRef}>
                             <Button className={`${styles.buttonSubmit} ${layoutState.isDisabledButton && 'disabled'}`} ref={submitButton}>
                                 <img src={send} alt='Отправить'  style={{width:'1.5rem'}}/>
@@ -120,22 +142,6 @@ function ChatForm({layoutState,setLayoutState,historyChatLength,mainContentRef,m
                         </div>
                     </Form.Group>
                 </Form>
-            ) : (
-                // layoutStateButtons.isShowStartButton ? (
-                //     <Button className={`w-100 ${styles.btnStart} ${styles.btnsStart}
-                //     ${layoutStateButtons.isShowStartButtonStyle && styles.btnsStartShow}`} onClick={onStartChat}
-                //             ref={startButtonRef} onTransitionEnd={handleTransitionEndStartButton}>Начать беседу</Button>
-                // ):(
-                //     <Row className="p-3 d-flex gap-3">
-                //         <Button className={`col-12  mb-md-2 ${styles.btnStarter} ${styles.btnsStart} ${layoutStateButtons.isShowLevelButtons && styles.btnsStartShow}`}>Я только начинаю</Button>
-                //         <Button className={`col btn ${styles.btnHtmlCss} ${styles.btnsStart} ${layoutStateButtons.isShowLevelButtons && styles.btnsStartShow}`}>HTML/CSS</Button>
-                //         <Button className={`col btn ${styles.btnJs} ${styles.btnsStart} ${layoutStateButtons.isShowLevelButtons && styles.btnsStartShow}`}>JS/TypeScript</Button>
-                //         <Button className={`col btn ${styles.btnReact} ${styles.btnsStart} ${layoutStateButtons.isShowLevelButtons && styles.btnsStartShow}`}>React</Button>
-                //     </Row>
-                //
-                //
-                // )
-                <LaunchChat/>
             )
             }
         </>

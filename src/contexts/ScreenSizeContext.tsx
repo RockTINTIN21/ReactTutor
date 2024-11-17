@@ -20,9 +20,9 @@ export function ScreenSizeProvider({children}: ScreenSizeProviderProps) {
     const [mainContentSize,setMainContentSize] = useState<[number,number]>([0,0]);
     const [navbarHeight,setNavbarHeight] = useState<number>(0);
     const [isShowFirstMessage, setIsShowFirstMessage] = useState<boolean>(false);
-    useEffect(() => {
-        console.log('Показать первое сообщение!')
-    }, [isShowFirstMessage]);
+    // useEffect(() => {
+    //     console.log('Показать первое сообщение!')
+    // }, [isShowFirstMessage]);
     useEffect(() => {
         const resizeHandler = () => setClientWindowSize([window.innerWidth, window.innerHeight])
         window.addEventListener('resize', resizeHandler);
